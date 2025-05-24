@@ -1,0 +1,199 @@
+/* Base styles */
+.root {
+    -fx-background-color: #f5f7fa;
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* Header styles */
+.header-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.header-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #7f8c8d;
+}
+
+/* Card styles */
+.stat-card {
+    -fx-background-color: white;
+    -fx-background-radius: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-padding: 20px;
+    -fx-transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 0, 5);
+    -fx-translate-y: -5px;
+}
+
+.card-title {
+    -fx-fill: #7f8c8d;
+    -fx-font-size: 16px;
+}
+
+.card-value {
+    -fx-fill: #2c3e50;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.card-subtext {
+    -fx-fill: #7f8c8d;
+    -fx-font-size: 14px;
+}
+
+.card-positive-change {
+    -fx-fill: #27ae60;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* Chart container styles */
+.chart-container {
+    -fx-background-color: white;
+    -fx-background-radius: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-transition: all 0.3s ease;
+}
+
+.chart-container:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0, 0, 3);
+}
+
+.chart-title {
+    -fx-fill: #2c3e50;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.chart-placeholder {
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-text-fill: #95a5a6;
+    -fx-font-style: italic;
+    -fx-alignment: center;
+}
+
+/* Activity feed styles */
+.activity-container {
+    -fx-background-color: white;
+    -fx-background-radius: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-transition: all 0.3s ease;
+}
+
+.activity-container:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0, 0, 3);
+}
+
+.section-title {
+    -fx-fill: #2c3e50;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.activity-item {
+    -fx-padding: 5px 0;
+    -fx-transition: all 0.2s ease;
+}
+
+.activity-item:hover {
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 5px;
+    -fx-padding: 5px 10px;
+}
+
+.activity-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-fill: #2c3e50;
+}
+
+.activity-description {
+    -fx-fill: #95a5a6;
+    -fx-font-size: 12px;
+}
+
+.activity-time {
+    -fx-fill: #95a5a6;
+    -fx-font-size: 12px;
+}
+
+.divider-line {
+    -fx-stroke: #ecf0f1;
+    -fx-stroke-width: 1px;
+}
+
+/* Metrics styles */
+.metrics-container {
+    -fx-background-color: white;
+    -fx-background-radius: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-transition: all 0.3s ease;
+}
+
+.metrics-container:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0, 0, 3);
+}
+
+.metric-item {
+    -fx-padding: 5px 0;
+    -fx-transition: all 0.2s ease;
+}
+
+.metric-item:hover {
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 5px;
+    -fx-padding: 5px 10px;
+}
+
+.metric-label {
+    -fx-font-size: 14px;
+    -fx-fill: #2c3e50;
+}
+
+.metric-value-critical {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-fill: #e74c3c;
+}
+
+.metric-value-warning {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-fill: #f39c12;
+}
+
+.metric-value-good {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-fill: #27ae60;
+}
+
+/* Animation for elements when they appear */
+@keyframes fadeIn {
+    from { -fx-opacity: 0; }
+    to { -fx-opacity: 1; }
+}
+
+.stat-card, .chart-container, .activity-container, .metrics-container {
+    -fx-opacity: 0;
+    -fx-animation: fadeIn 0.5s ease-in forwards;
+}
+
+.chart-container {
+    -fx-animation-delay: 0.2s;
+}
+
+.activity-container {
+    -fx-animation-delay: 0.3s;
+}
+
+.metrics-container {
+    -fx-animation-delay: 0.4s;
+}

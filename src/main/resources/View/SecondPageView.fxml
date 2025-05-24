@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="900.0" stylesheets="@secondPagestyles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse74.mytest2.responsive.Controller.SecondPage">
+   <VBox styleClass="vbox-menu" prefHeight="861.0" prefWidth="220.0">
+      <padding>
+         <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
+      </padding>
+
+      <Label styleClass="label-title" text="Rice Mill Manager" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI" size="20.0" />
+         </font>
+         <padding>
+            <Insets bottom="20.0" />
+         </padding>
+      </Label>
+
+      <Separator styleClass="separator" />
+
+      <VBox prefHeight="861.0" prefWidth="200.0" spacing="8.0" style="-fx-padding: 15 0 0 0;">
+         <Button id="btnDashboard" styleClass="button-menu" mnemonicParsing="false" onAction="#btnCustomerOnAction" text="Dashboard">
+            <font>
+               <Font name="Segoe UI Bold" size="16.0" />
+            </font>
+            <padding>
+               <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+            </padding>
+         </Button>
+
+         <Button id="btnUsers" styleClass="button-menu" mnemonicParsing="false" onAction="#btnUserOnAction" text="Users &amp; Employees">
+            <font>
+               <Font size="16.0" />
+            </font>
+            <padding>
+               <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+            </padding>
+         </Button>
+
+         <Button id="btnSuppliers" styleClass="button-menu" mnemonicParsing="false" onAction="#btnSupplierOnAction" text="Suppliers &amp; Farmers">
+            <font>
+               <Font size="16.0" />
+            </font>
+            <padding>
+               <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+            </padding>
+         </Button>
+
+         <Button id="btnCustomers" styleClass="button-menu" mnemonicParsing="false" onAction="#btnCustomersOnAction" text="Customers">
+            <font>
+               <Font size="16.0" />
+            </font>
+            <padding>
+               <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+            </padding>
+         </Button>
+
+         <Button id="btnMillingProcess" styleClass="button-menu" mnemonicParsing="false" onAction="#btnMillingProccessOnAction" text="Milling Process">
+            <font>
+               <Font size="16.0" />
+            </font>
+            <padding>
+               <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+            </padding>
+         </Button>
+
+         <Button id="btnInventory" styleClass="button-menu" mnemonicParsing="false" onAction="#btnInventoryOnAction" text="Inventory">
+            <font>
+               <Font size="16.0" />
+            </font>
+            <padding>
+               <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+            </padding>
+         </Button>
+
+         <Button id="btnSalesOrders" styleClass="button-menu" mnemonicParsing="false" onAction="#btnOrdersOnAction" text="Sales &amp; Orders">
+            <font>
+               <Font size="16.0" />
+            </font>
+            <padding>
+               <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+            </padding>
+         </Button>
+
+         <Button id="btnExpenses" styleClass="button-menu" mnemonicParsing="false" onAction="#btnExpensesOnAction" text="Expenses &amp; Payments">
+            <font>
+               <Font size="16.0" />
+            </font>
+            <padding>
+               <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+            </padding>
+         </Button>
+
+         <Button id="btnReports" styleClass="button-menu" mnemonicParsing="false" onAction="#btnReportsOnAction" text="Reports">
+            <font>
+               <Font size="16.0" />
+            </font>
+            <padding>
+               <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+            </padding>
+         </Button>
+
+         <Button id="btnQualityCheck" styleClass="button-menu" mnemonicParsing="false" onAction="#btnQualityCheckOnActiion" text="Quality Check">
+            <font>
+               <Font size="16.0" />
+            </font>
+            <padding>
+               <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+            </padding>
+         </Button>
+
+         <Button id="btnMaintenance" styleClass="button-menu" mnemonicParsing="false" onAction="#btnMaintenanceOnAction" text="Maintenance">
+            <font>
+               <Font size="16.0" />
+            </font>
+            <padding>
+               <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+            </padding>
+         </Button>
+
+         <Button id="btnRawPaddy" styleClass="button-menu" mnemonicParsing="false" onAction="#btnRawPaddyOnAction" text="Raw Paddy">
+            <font>
+               <Font size="16.0" />
+            </font>
+            <padding>
+               <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+            </padding>
+         </Button>
+
+         <Button id="btnFinishedProduct" styleClass="button-menu" mnemonicParsing="false" onAction="#btnFinishedProductOnAction" text="Finished Product">
+            <font>
+               <Font size="16.0" />
+            </font>
+            <padding>
+               <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+            </padding>
+         </Button>
+
+         <Button id="btnWasteManagement" styleClass="button-menu" mnemonicParsing="false" onAction="#btnWasteOnAction" text="Waste Management">
+            <font>
+               <Font size="16.0" />
+            </font>
+            <padding>
+               <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+            </padding>
+         </Button>
+
+         <!-- Logout Button with Power Symbol (⏻) -->
+         <Button id="btnLogout" styleClass="button-menu" mnemonicParsing="false" onAction="#btnLogoutOnAction" text="⏻ Logout">
+            <font>
+               <Font size="16.0" />
+            </font>
+            <padding>
+               <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
+            </padding>
+         </Button>
+      </VBox>
+   </VBox>
+
+   <AnchorPane fx:id="ancMainContainer" styleClass="main-container" layoutX="220.0" prefHeight="600.0" prefWidth="680.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <padding>
+         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+      </padding>
+   </AnchorPane>
+</AnchorPane>

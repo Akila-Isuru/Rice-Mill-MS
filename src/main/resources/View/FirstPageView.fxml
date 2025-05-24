@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="ancPage2" prefHeight="500.0" prefWidth="692.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse74.mytest2.responsive.Controller.FirstPage">
+   <children>
+      <Rectangle styleClass="rectangle" height="500" width="698.0" />
+
+      <AnchorPane fx:id="ancPage1" prefHeight="500.0" prefWidth="250.0">
+         <children>
+            <ImageView fitHeight="120.0" fitWidth="120.0" layoutX="65.0" layoutY="60.0">
+               <image>
+                  <Image url="@../Image/test.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="50.0" layoutY="200.0" styleClass="label-header" text="LAKSHAN" />
+            <Label layoutX="40.0" layoutY="245.0" styleClass="label-subheader" text="RICE MILL PVT(Ltd)" />
+         </children>
+      </AnchorPane>
+
+      <VBox alignment="TOP_CENTER" layoutX="250" prefHeight="500" prefWidth="440.0" styleClass="vbox-right">
+         <children>
+            <Label styleClass="label-login" text="User Login" />
+
+            <VBox styleClass="vbox-input">
+               <HBox styleClass="hbox-input">
+                  <ImageView fitHeight="24" fitWidth="24">
+                     <image>
+                        <Image url="@../Image/user-244-128.png" />
+                     </image>
+                  </ImageView>
+                  <TextField fx:id="userName" prefHeight="40" prefWidth="300" promptText="User Name" styleClass="text-field" />
+               </HBox>
+
+               <HBox styleClass="hbox-input">
+                  <ImageView fitHeight="24" fitWidth="24">
+                     <image>
+                        <Image url="@../Image/Screenshot%202025-04-03%20at%2019.52.58.png" />
+                     </image>
+                  </ImageView>
+                  <PasswordField fx:id="password" prefHeight="40" prefWidth="300" promptText="Password" styleClass="text-field" />
+               </HBox>
+            </VBox>
+
+            <Button fx:id="btnSecond" mnemonicParsing="false" onAction="#btnSecondPageOnAction" styleClass="button-login" text="Login" />
+
+            <Button fx:id="btnForgotPassword" mnemonicParsing="false" onAction="#forgotPasswordOnAction" styleClass="button-forgot" text="Forgot Password?" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

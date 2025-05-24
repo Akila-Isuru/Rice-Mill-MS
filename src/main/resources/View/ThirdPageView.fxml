@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+<?import javafx.scene.control.Label?>
+
+<?import javafx.scene.image.Image?>
+
+<?import javafx.scene.image.ImageView?>
+
+<?import javafx.scene.layout.AnchorPane?>
+
+<?import javafx.scene.text.Font?>
+
+<?import javafx.scene.text.Text?>
+
+
+
+<AnchorPane prefHeight="861.0" prefWidth="1053.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse74.mytest2.responsive.Controller.ThirdPage">
+
+   <children>
+
+      <ImageView fitHeight="31.0" fitWidth="37.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+
+         <image>
+
+            <Image url="@../Image/dashboard-icon-vector-8.jpg" />
+
+         </image>
+
+      </ImageView>
+
+      <Label layoutX="51.0" layoutY="14.0" prefHeight="30.0" prefWidth="162.0" text="Dashboard Overview">
+
+         <font>
+
+            <Font name="System Bold" size="17.0" />
+
+         </font>
+
+      </Label>
+
+      <Label layoutX="51.0" layoutY="36.0" prefHeight="17.0" prefWidth="133.0" text="Welcome back, Admin" />
+
+      <ImageView fitHeight="42.0" fitWidth="29.0" layoutX="92.0" layoutY="355.0" pickOnBounds="true" preserveRatio="true" />
+
+      <ImageView fitHeight="42.0" fitWidth="29.0" layoutX="4.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true" />
+
+      <Label layoutX="20.0" layoutY="86.0" prefHeight="158.0" prefWidth="238.0" style="-fx-background-color: #e4effa; -fx-background-radius: 40;" text=" " />
+
+      <Label layoutX="283.0" layoutY="88.0" prefHeight="158.0" prefWidth="237.0" style="-fx-background-color: #e4effa; -fx-background-radius: 40;" />
+
+      <Label layoutX="542.0" layoutY="87.0" prefHeight="162.0" prefWidth="236.0" style="-fx-background-color: #e4effa; -fx-background-radius: 40;" />
+
+      <Label layoutX="794.0" layoutY="90.0" prefHeight="158.0" prefWidth="236.0" style="-fx-background-color: #e4effa; -fx-background-radius: 40;" />
+
+      <Text layoutX="46.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Today's Milling" wrappingWidth="143.52143170801162">
+
+         <font>
+
+            <Font size="21.0" />
+
+         </font>
+
+      </Text>
+
+      <Text layoutX="48.0" layoutY="148.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2500 Kg" wrappingWidth="143.52143170801162">
+
+         <font>
+
+            <Font name="System Bold" size="21.0" />
+
+         </font>
+
+      </Text>
+
+      <Text layoutX="50.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="15 % From Yesterday" wrappingWidth="143.52143170801162">
+
+         <font>
+
+            <Font size="16.0" />
+
+         </font>
+
+      </Text>
+
+      <Text layoutX="309.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inventory Value" wrappingWidth="143.52143170801162">
+
+         <font>
+
+            <Font size="21.0" />
+
+         </font>
+
+      </Text>
+
+      <Text layoutX="309.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="450 000 lkr" wrappingWidth="143.52143170801162">
+
+         <font>
+
+            <Font name="System Bold" size="21.0" />
+
+         </font>
+
+      </Text>
+
+      <Text layoutX="310.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1,200 Bags in stock" wrappingWidth="143.52143170801162">
+
+         <font>
+
+            <Font size="16.0" />
+
+         </font>
+
+      </Text>
+
+      <Text layoutX="567.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pending Orders " wrappingWidth="143.52143170801162">
+
+         <font>
+
+            <Font size="21.0" />
+
+         </font>
+
+      </Text>
+
+      <Text layoutX="578.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="18" wrappingWidth="143.52143170801162">
+
+         <font>
+
+            <Font name="System Bold" size="21.0" />
+
+         </font>
+
+      </Text>
+
+      <Text layoutX="567.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Worth 400 000 lkr" wrappingWidth="143.52143170801162">
+
+         <font>
+
+            <Font size="16.0" />
+
+         </font>
+
+      </Text>
+
+      <Text layoutX="819.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Today's Revenue" wrappingWidth="162.60913922754287">
+
+         <font>
+
+            <Font size="21.0" />
+
+         </font>
+
+      </Text>
+
+      <Text layoutX="828.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="120 000 lkr" wrappingWidth="143.52143170801162">
+
+         <font>
+
+            <Font name="System Bold" size="21.0" />
+
+         </font>
+
+      </Text>
+
+      <Text layoutX="828.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8 orders completed" wrappingWidth="143.52143170801162">
+
+         <font>
+
+            <Font size="16.0" />
+
+         </font>
+
+      </Text>
+
+      <Label layoutX="18.0" layoutY="257.0" prefHeight="240.0" prefWidth="505.0" style="-fx-background-color: #e4effa; -fx-background-radius: 20;" />
+
+      <Label layoutX="531.0" layoutY="256.0" prefHeight="245.0" prefWidth="500.0" style="-fx-background-color: #e4effa; -fx-background-radius: 20;" />
+
+      <Text layoutX="38.0" layoutY="297.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Milling Process TimeLine" wrappingWidth="245.71453285217285">
+
+         <font>
+
+            <Font size="16.0" />
+
+         </font>
+
+      </Text>
+
+      <Text layoutX="546.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stock Distribution" wrappingWidth="136.40287060453466">
+
+         <font>
+
+            <Font size="16.0" />
+
+         </font>
+
+      </Text>
+
+      <Label layoutX="42.0" layoutY="309.0" prefHeight="170.0" prefWidth="453.0" style="-fx-background-color: white; -fx-background-radius: 20;" text=" Milling TimeLine Chart " />
+
+      <Label layoutX="550.0" layoutY="311.0" prefHeight="170.0" prefWidth="453.0" style="-fx-background-color: white; -fx-background-radius: 20;" text=" Stock Distribution Chart" />
+
+      <Label layoutX="18.0" layoutY="514.0" prefHeight="335.0" prefWidth="627.0" style="-fx-background-color: white; -fx-background-radius: 20;" />
+
+      <Text layoutX="52.0" layoutY="548.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Recent Activities" wrappingWidth="190.3491153717041">
+
+         <font>
+
+            <Font size="16.0" />
+
+         </font>
+
+      </Text>
+
+      <ImageView fitHeight="35.0" fitWidth="23.0" layoutX="39.0" layoutY="578.0" pickOnBounds="true" preserveRatio="true">
+
+         <image>
+
+            <Image url="@../Image/Screenshot%202025-04-08%20at%2020.43.05.png" />
+
+         </image>
+
+      </ImageView>
+
+      <Text layoutX="72.0" layoutY="592.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New order delivered" wrappingWidth="150.89036722398293">
+
+         <font>
+
+            <Font size="17.0" />
+
+         </font>
+
+      </Text>
+
+      <Text layoutX="74.0" layoutY="608.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #95a5a6;" text="Order O#45 delivered to Customer DE.Alwis" wrappingWidth="283.7627153572464" />
+
+      <Text layoutX="346.0" layoutY="590.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #95a5a6;" text="2h ago" />
+
+      <ImageView fitHeight="34.0" fitWidth="26.0" layoutX="39.0" layoutY="645.0" pickOnBounds="true" preserveRatio="true">
+
+         <image>
+
+            <Image url="@../Image/Screenshot%202025-04-08%20at%2020.57.42.png" />
+
+         </image>
+
+      </ImageView>
+
+      <Text layoutX="70.0" layoutY="663.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Milling Process Completed" wrappingWidth="217.18842422450354">
+
+         <font>
+
+            <Font size="17.0" />
+
+         </font>
+
+      </Text>
+
+      <Text layoutX="68.0" layoutY="681.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #95a5a6;" text="Batch #789 - 1500 kg processed" wrappingWidth="269.2542619881058" />
+
+      <Text layoutX="345.0" layoutY="662.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #95a5a6;" text="4h ago" />
+
+      <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="40.0" layoutY="720.0" pickOnBounds="true" preserveRatio="true">
+
+         <image>
+
+            <Image url="@../Image/Screenshot%202025-04-08%20at%2021.05.34.png" />
+
+         </image>
+
+      </ImageView>
+
+      <Text layoutX="72.0" layoutY="735.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New supplier registered" wrappingWidth="217.18842422450354">
+
+         <font>
+
+            <Font size="17.0" />
+
+         </font>
+
+      </Text>
+
+      <Text layoutX="66.0" layoutY="749.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #95a5a6;" text="Supplier Mr.Jayawardane added to the system" wrappingWidth="287.4094438728714" />
+
+      <Text layoutX="345.0" layoutY="733.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #95a5a6;" text="6h ago" />
+
+      <Label layoutX="658.0" layoutY="522.0" prefHeight="326.0" prefWidth="379.0" style="-fx-background-radius: 20; -fx-background-color: white;" />
+
+      <Text layoutX="698.0" layoutY="552.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quality matrics" wrappingWidth="114.30399513244629" />
+
+      <Text layoutX="709.0" layoutY="604.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Moisture Level" wrappingWidth="117.77124323023475" />
+
+      <Text layoutX="708.0" layoutY="649.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Broken rice" wrappingWidth="92.95163917541504" />
+
+      <Text layoutX="705.0" layoutY="690.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Foreign Matter" wrappingWidth="121.34366533666298" />
+
+      <Text layoutX="919.0" layoutY="604.0" strokeType="OUTSIDE" strokeWidth="0.0" text="14.2%" />
+
+      <Text layoutX="922.0" layoutY="649.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3.8%" />
+
+      <Text layoutX="922.0" layoutY="688.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0.5%" />
+
+   </children>
+
+</AnchorPane>

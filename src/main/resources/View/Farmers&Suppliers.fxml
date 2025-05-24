@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane fx:id="ancFarmerSupplier" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: yellow;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse74.mytest2.responsive.Controller.FarmersSuppliersController">
+   <children>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="58.0" layoutY="99.0" onMouseClicked="#onSupplier" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Image/Screenshot%202025-04-08%20at%2020.43.05.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="308.0" layoutY="99.0" onMouseClicked="#onFarmer" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Image/test.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="81.0" layoutY="45.0" prefHeight="35.0" prefWidth="313.0" text="Farmers &amp; supplier">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

@@ -1,0 +1,56 @@
+/* Base Styles */
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* Left Menu - VBox */
+.vbox-menu {
+    -fx-background-color: #2c3e50;
+    -fx-padding: 20 10 20 10;
+    -fx-spacing: 8;
+    -fx-pref-width: 220px;
+}
+
+.vbox-menu .label-title {
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-alignment: center;
+    -fx-padding: 0 0 20 0;
+}
+
+.vbox-menu .separator {
+    -fx-background-color: #34495e;
+}
+
+.vbox-menu .button-menu {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-alignment: center-left;
+    -fx-border-radius: 4px;
+    -fx-cursor: hand;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 10 8 10;
+    -fx-transition: background-color 0.3s ease-in-out, text-fill 0.3s ease-in-out, scale-x 0.2s ease-in-out;
+    -fx-scale-x: 1.0;
+}
+
+.vbox-menu .button-menu:hover {
+    -fx-background-color: #34495e;
+    -fx-scale-x: 1.05;
+}
+
+.vbox-menu .button-menu:pressed {
+    -fx-background-color: #34495e; /* Keep the hover color */
+    -fx-opacity: 0.8; /* Slightly fade on press */
+    -fx-scale-x: 0.95; /* Slightly scale down on press */
+    -fx-translate-y: 1px;
+    -fx-text-fill: #f0f0f0; /* Slightly lighter text on press */
+}
+
+/* Main Content Area - AnchorPane */
+#ancMainContainer {
+    -fx-background-color: #f5f7fa;
+    -fx-padding: 20;
+}
