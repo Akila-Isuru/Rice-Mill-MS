@@ -57,9 +57,13 @@ public class UsersController implements Initializable {
     private TextField txtName;
 
     @FXML
-    private TextField txtRole;
+    private TextField txtPassword;
+
     @FXML
-    private TableColumn<Usersdto,String > colcontact_number;
+    private TextField txtRole;
+
+    @FXML
+    private TableColumn<Usersdto,String> colcontact_number;
 
     @FXML
     private TableColumn<Usersdto,String> colemail;
@@ -69,6 +73,9 @@ public class UsersController implements Initializable {
 
     @FXML
     private TableColumn<Usersdto,String> colname;
+
+    @FXML
+    private TableColumn<Usersdto,String> colpassword;
 
     @FXML
     private TableColumn<Usersdto,String> colrole;
@@ -94,23 +101,23 @@ public class UsersController implements Initializable {
             String nextId = new UsersModel().getNextId();
             txtId.setText(nextId);
             txtId.setEditable(false);
-            System.out.println("DEBUG: Next ID retrieved: " + nextId); // Debug line
+            System.out.println("DEBUG: Next ID retrieved: " + nextId);
             if (nextId == null || nextId.isEmpty()) {
-                System.out.println("DEBUG: Got empty or null ID"); // Debug line
+                System.out.println("DEBUG: Got empty or null ID");
             }
             txtId.setText(nextId);
         } catch (SQLException e) {
-            System.err.println("ERROR in loadNextId: " + e.getMessage()); // Debug line
+            System.err.println("ERROR in loadNextId: " + e.getMessage());
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Error loading next ID").show();
         }
-
     }
 
     public void loadTable() throws SQLException {
         colid.setCellValueFactory(new PropertyValueFactory<>("user_id"));
         colname.setCellValueFactory(new PropertyValueFactory<>("name"));
         colemail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        colpassword.setCellValueFactory(new PropertyValueFactory<>("password"));
         colrole.setCellValueFactory(new PropertyValueFactory<>("role"));
         colcontact_number.setCellValueFactory(new PropertyValueFactory<>("contact_number"));
         try {
@@ -120,17 +127,14 @@ public class UsersController implements Initializable {
                 ObservableList<Usersdto> users = FXCollections.observableArrayList(usersdtos);
                 table.setItems(users);
             }
-
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-}
+    }
 
     @FXML
     void btnClearOnAction(ActionEvent event) throws SQLException {
         clearFields();
-
     }
 
     @FXML
@@ -141,32 +145,31 @@ public class UsersController implements Initializable {
             if (isDlete) {
                 clearFields();
                 new Alert(Alert.AlertType.INFORMATION, "User deleted successfully").show();
-            }else {
+            } else {
                 new Alert(Alert.AlertType.ERROR, "User delete not successfull").show();
             }
-
-
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "User delete not successfull").show();
         }
-
     }
 
     @FXML
     void btnSaveOnAction(ActionEvent event) throws SQLException {
-
         String name = txtName.getText();
         String email = txtEmail.getText();
         String phone = txtContactNumber.getText();
         String role = txtRole.getText();
+        String password = txtPassword.getText();
 
         boolean isValidName = name.matches(namePattern);
         boolean isValidEmail = email.matches(emailPattern);
         boolean isValidPhone = phone.matches(phonePattern);
         boolean isValidRole = role.matches(rolePattern);
 
-        Usersdto usersdto = new Usersdto(txtId.getText(),txtName.getText(),txtEmail.getText(),txtRole.getText(),txtContactNumber.getText());
+        Usersdto usersdto = new Usersdto(txtId.getText(), txtName.getText(), txtEmail.getText(),
+                password, txtRole.getText(), txtContactNumber.getText());
+
         if(isValidName && isValidEmail && isValidPhone && isValidRole) {
             try {
                 boolean isSave = new UsersModel().saveUser(usersdto);
@@ -176,28 +179,27 @@ public class UsersController implements Initializable {
                 } else {
                     new Alert(Alert.AlertType.ERROR, "User could not be saved").show();
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "User could not be saved").show();
             }
-        }else {
+        } else {
             Alert alert = new Alert(Alert.AlertType.ERROR,"Invalid Input Fields");
+            alert.show();
         }
-
     }
-
 
     private void clearFields() throws SQLException {
         loadTable();
         txtId.setText("");
         txtName.setText("");
         txtEmail.setText("");
+        txtPassword.setText("");
         txtRole.setText("");
         txtContactNumber.setText("");
         loadNextId();
         Platform.runLater(() -> {
-            txtId.setText(txtId.getText()); // Forces refresh
+            txtId.setText(txtId.getText());
             System.out.println("UI refreshed with ID: " + txtId.getText());
         });
         loadTable();
@@ -209,31 +211,31 @@ public class UsersController implements Initializable {
         String email = txtEmail.getText();
         String phone = txtContactNumber.getText();
         String role = txtRole.getText();
+        String password = txtPassword.getText();
 
         boolean isValidName = name.matches(namePattern);
         boolean isValidEmail = email.matches(emailPattern);
         boolean isValidPhone = phone.matches(phonePattern);
         boolean isValidRole = role.matches(rolePattern);
 
-        Usersdto usersdto = new Usersdto(txtId.getText(),txtName.getText(),txtEmail.getText(),txtRole.getText(),txtContactNumber.getText());
+        Usersdto usersdto = new Usersdto(txtId.getText(), txtName.getText(), txtEmail.getText(),
+                password, txtRole.getText(), txtContactNumber.getText());
+
         if(isValidName && isValidEmail && isValidPhone && isValidRole) {
             try {
                 boolean isUpdate = new UsersModel().updateUser(usersdto);
                 if (isUpdate) {
                     clearFields();
-                    new Alert(Alert.AlertType.INFORMATION, "User update successfully").show();
+                    new Alert(Alert.AlertType.INFORMATION, "User updated successfully").show();
                 } else {
-                    new Alert(Alert.AlertType.ERROR, "User could not be updted").show();
+                    new Alert(Alert.AlertType.ERROR, "User could not be updated").show();
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "User could not be updated").show();
             }
         }
-
     }
-
 
     public void tableColumnOnClicked(MouseEvent mouseEvent) {
         Usersdto usersdto = (Usersdto) table.getSelectionModel().getSelectedItem();
@@ -241,6 +243,7 @@ public class UsersController implements Initializable {
             txtId.setText(usersdto.getUser_id());
             txtName.setText(usersdto.getName());
             txtEmail.setText(usersdto.getEmail());
+            txtPassword.setText(usersdto.getPassword());
             txtRole.setText(usersdto.getRole());
             txtContactNumber.setText(usersdto.getContact_number());
         }
@@ -248,15 +251,12 @@ public class UsersController implements Initializable {
 
     public void txtNameChange(KeyEvent keyEvent) {
         String name = txtName.getText();
-
         boolean isValidName = name.matches(namePattern);
-
         if (!isValidName) {
             txtName.setStyle(txtName.getStyle() + ";-fx-border-color: red");
         } else {
             txtName.setStyle(txtName.getStyle() + ";-fx-border-color: blue");
         }
-
     }
 
     public void txtEmailChange(KeyEvent keyEvent) {
@@ -264,7 +264,7 @@ public class UsersController implements Initializable {
         boolean isValidEmail = email.matches(emailPattern);
         if(!isValidEmail) {
             txtEmail.setStyle(txtEmail.getStyle() + ";-fx-border-color: red");
-        }else {
+        } else {
             txtEmail.setStyle(txtEmail.getStyle() + ";-fx-border-color: blue");
         }
     }
@@ -274,7 +274,7 @@ public class UsersController implements Initializable {
         boolean isValidRole = role.matches(rolePattern);
         if(!isValidRole) {
             txtRole.setStyle(txtRole.getStyle() + ";-fx-border-color: red");
-        }else {
+        } else {
             txtRole.setStyle(txtRole.getStyle() + ";-fx-border-color: blue");
         }
     }
@@ -284,7 +284,7 @@ public class UsersController implements Initializable {
         boolean isValidPhone = contactNumber.matches(phonePattern);
         if(!isValidPhone) {
             txtContactNumber.setStyle(txtContactNumber.getStyle() + ";-fx-border-color: red");
-        }else {
+        } else {
             txtContactNumber.setStyle(txtContactNumber.getStyle() + ";-fx-border-color: blue");
         }
     }

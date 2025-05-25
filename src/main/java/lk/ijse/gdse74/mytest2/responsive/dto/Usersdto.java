@@ -1,16 +1,16 @@
 package lk.ijse.gdse74.mytest2.responsive.dto;
 import lombok.*;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-
-
 public class Usersdto {
     private String user_id;
     private String name;
     private String email;
+    private String password;
     private String role;
     private String contact_number;
 
@@ -18,4 +18,3 @@ public class Usersdto {
         this.user_id = id;
     }
 }
-

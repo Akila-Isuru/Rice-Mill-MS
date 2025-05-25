@@ -20,7 +20,7 @@
             </font>
         </Label>
 
-        <VBox layoutX="50.0" layoutY="60.0" prefHeight="250.0" prefWidth="800.0" spacing="8.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);">
+        <VBox layoutX="50.0" layoutY="60.0" prefHeight="280.0" prefWidth="800.0" spacing="8.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);">
             <children>
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #34495e; -fx-font-size: 12;" text="User ID" />
                 <TextField fx:id="txtId" promptText="U00#" style="-fx-background-radius: 3; -fx-border-color: #bdc3c7; -fx-border-radius: 3;" />
@@ -30,6 +30,9 @@
 
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #34495e; -fx-font-size: 12;" text="Email" />
                 <TextField fx:id="txtEmail" onKeyReleased="#txtEmailChange" promptText="user@ricemill.lk" style="-fx-background-radius: 3; -fx-border-color: #bdc3c7; -fx-border-radius: 3;" />
+
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #34495e; -fx-font-size: 12;" text="Password" />
+                <TextField fx:id="txtPassword" promptText="Password" style="-fx-background-radius: 3; -fx-border-color: #bdc3c7; -fx-border-radius: 3;" />
 
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #34495e; -fx-font-size: 12;" text="Role" />
                 <TextField fx:id="txtRole" onKeyReleased="#txtRoleChange" promptText="role" style="-fx-background-radius: 3; -fx-border-color: #bdc3c7; -fx-border-radius: 3;" />
@@ -42,7 +45,7 @@
             </padding>
         </VBox>
 
-        <ButtonBar layoutX="41.0" layoutY="376.0" prefHeight="40.0" prefWidth="800.0" style="-fx-background-color: transparent; -fx-padding: 10 0 10 0;">
+        <ButtonBar layoutX="49.0" layoutY="439.0" prefHeight="40.0" prefWidth="800.0" style="-fx-background-color: transparent; -fx-padding: 10 0 10 0;">
             <buttons>
                 <Button fx:id="btnSave" minWidth="80.0" mnemonicParsing="false" onAction="#btnSaveOnAction" prefHeight="30.0" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-background-radius: 3;" text="Save">
                     <font>
@@ -67,13 +70,14 @@
             </buttons>
         </ButtonBar>
 
-        <TableView fx:id="table" layoutX="49.0" layoutY="428.0" onMouseClicked="#tableColumnOnClicked" prefHeight="270.0" prefWidth="800.0" style="-fx-background-radius: 5; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);">
+        <TableView fx:id="table" layoutX="49.0" layoutY="497.0" onMouseClicked="#tableColumnOnClicked" prefHeight="201.0" prefWidth="800.0" style="-fx-background-radius: 5; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);">
             <columns>
-                <TableColumn fx:id="colid" prefWidth="120.0" style="-fx-font-size: 12;" text="User ID" />
-                <TableColumn fx:id="colname" prefWidth="180.0" style="-fx-font-size: 12;" text="Name" />
-                <TableColumn fx:id="colemail" prefWidth="220.0" style="-fx-font-size: 12;" text="Email" />
-                <TableColumn fx:id="colrole" prefWidth="120.0" style="-fx-font-size: 12;" text="Role" />
-                <TableColumn fx:id="colcontact_number" prefWidth="160.0" style="-fx-font-size: 12;" text="Contact Number" />
+                <TableColumn fx:id="colid" prefWidth="100.0" style="-fx-font-size: 12;" text="User ID" />
+                <TableColumn fx:id="colname" prefWidth="150.0" style="-fx-font-size: 12;" text="Name" />
+                <TableColumn fx:id="colemail" prefWidth="180.0" style="-fx-font-size: 12;" text="Email" />
+                <TableColumn fx:id="colpassword" prefWidth="150.0" style="-fx-font-size: 12;" text="Password" />
+                <TableColumn fx:id="colrole" prefWidth="100.0" style="-fx-font-size: 12;" text="Role" />
+                <TableColumn fx:id="colcontact_number" prefWidth="120.0" style="-fx-font-size: 12;" text="Contact Number" />
             </columns>
         </TableView>
     </children>
