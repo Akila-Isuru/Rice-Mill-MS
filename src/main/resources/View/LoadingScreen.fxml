@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.ProgressIndicator?>
+
+<?import javafx.scene.layout.VBox?>
+<AnchorPane fx:id="rootPane" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse74.mytest2.responsive.Controller.LoadingScreenController">
+    <children>
+        <Rectangle width="700.0" height="500.0" styleClass="loading-rect" />
+
+        <VBox alignment="CENTER" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <ImageView fitHeight="150.0" fitWidth="150.0">
+                    <image>
+                        <Image url="@../Image/test.png" />
+                    </image>
+                </ImageView>
+                <Text styleClass="loading-text" text="LAKSHAN RICE MILL" />
+                <ProgressIndicator styleClass="loading-progress" progress="-1.0" />
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
