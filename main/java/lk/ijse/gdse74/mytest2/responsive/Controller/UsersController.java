@@ -213,7 +213,7 @@ public class UsersController implements Initializable {
                 System.out.println("DEBUG: Got empty or null ID");
             }
             txtId.setText(nextId);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             System.err.println("ERROR in loadNextId: " + e.getMessage());
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Error loading next ID").show();
@@ -354,11 +354,11 @@ public class UsersController implements Initializable {
         String password = passwordVisible ? txtPasswordVisible.getText() : txtPassword.getText();
 
         boolean isValidName = name.matches(namePattern);
-        boolean isValidEmail = email.matches(emailPattern);
+        //boolean isValidEmail = email.matches(emailPattern);
         boolean isValidPhone = phone.matches(phonePattern);
         boolean isValidRole = role != null && !role.isEmpty();
 
-        if (!isValidName || !isValidEmail || !isValidPhone || !isValidRole) {
+        if (!isValidName|| !isValidPhone || !isValidRole) {
             new Alert(Alert.AlertType.ERROR, "Please fill all fields with valid data").show();
             return;
         }
