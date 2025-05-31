@@ -16,6 +16,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Optional; // Import Optional for confirmation dialogs
 import java.util.ResourceBundle;
 
 public class MillingProcessController implements Initializable {
@@ -83,64 +84,88 @@ public class MillingProcessController implements Initializable {
     @FXML
     private TextField txtStart_time;
 
-    private final String timePattern = "^([01]\\d|2[0-3]):([0-5]\\d):([0-5]\\d)$";
+    private final String timePattern = "^([01]\\d|2[0-3]):([0-5]\\d):([0-5]\\d)$"; // This pattern is defined but not used for validation in the provided code.
 
     @FXML
     void btnClearOnAction(ActionEvent event) throws SQLException {
         clearFields();
-
+        // After clearing, disable update and delete buttons
+        btnUpdate.setDisable(true);
+        btnDelete.setDisable(true);
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        String id = txtMilling_id.getText();
-        try {
-            boolean isDelete = MillingProcessModel.deleteMillingProcess(new MillingProcessdto(id));
-            if (isDelete) {
-                clearFields();
-                new Alert(Alert.AlertType.INFORMATION, "Deleted").show();
-            }else {
-                new Alert(Alert.AlertType.ERROR, "Not Deleted").show();
+        // Confirmation dialog for delete
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Delete Milling Process");
+        alert.setContentText("Are you sure you want to delete this milling process? This action cannot be undone.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            String id = txtMilling_id.getText();
+            try {
+                boolean isDelete = MillingProcessModel.deleteMillingProcess(new MillingProcessdto(id));
+                if (isDelete) {
+                    new Alert(Alert.AlertType.INFORMATION, "Milling Process Deleted Successfully").show();
+                    clearFields();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Milling Process Not Deleted").show();
+                }
+
+            } catch (Exception e){
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Failed to delete milling process data").show();
             }
-
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR);
         }
-
     }
 
     @FXML
-   public  void btnSaveOnAction(ActionEvent event) {
+    public  void btnSaveOnAction(ActionEvent event) {
 
         String millingId = txtMilling_id.getText();
         String paddy = txtPaddyid.getText();
+        // Basic validation for time format before parsing
+        if (!txtStart_time.getText().matches(timePattern) || !txtEnd_time.getText().matches(timePattern)) {
+            new Alert(Alert.AlertType.ERROR, "Invalid Time Format. Please use HH:MM:SS.").show();
+            return;
+        }
+
         Time starTime = Time.valueOf(txtStart_time.getText());
         Time endTime = Time.valueOf(txtEnd_time.getText());
-        double milledQuantity = Double.parseDouble(txtMilledQuantity.getText());
-        double broken = Double.parseDouble(txtBrokenRice.getText());
-        double husk = Double.parseDouble(txtHusk.getText());
-        double bran = Double.parseDouble(txtBran.getText());
+
+        // Basic validation for numeric fields
+        double milledQuantity, broken, husk, bran;
+        try {
+            milledQuantity = Double.parseDouble(txtMilledQuantity.getText());
+            broken = Double.parseDouble(txtBrokenRice.getText());
+            husk = Double.parseDouble(txtHusk.getText());
+            bran = Double.parseDouble(txtBran.getText());
+        } catch (NumberFormatException e) {
+            new Alert(Alert.AlertType.ERROR, "Invalid numeric input. Please enter valid numbers for quantities.").show();
+            return;
+        }
+
 
         MillingProcessdto millingProcessdto = new MillingProcessdto(millingId,paddy,starTime,endTime,milledQuantity,broken,husk,bran);
         try {
-            MillingProcessModel millingProcessModel = new MillingProcessModel();
+            // No need to instantiate MillingProcessModel here, as saveMillingProcess is static
             boolean isSave = MillingProcessModel.saveMillingProcess(millingProcessdto);
             if(isSave){
+                new Alert(Alert.AlertType.INFORMATION,"Milling Process Saved Successfully").show();
                 clearFields();
-                new Alert(Alert.AlertType.INFORMATION,"Milling Process Saved").show();
             }else {
                 new Alert(Alert.AlertType.ERROR,"Milling Process Not Saved").show();
             }
 
         }catch (Exception e){
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR,"Something went wrong").show();
+            new Alert(Alert.AlertType.ERROR,"Something went wrong while saving milling process").show();
         }
     }
 
     private void clearFields() throws SQLException {
-
         txtMilling_id.clear();
         txtPaddyid.clear();
         txtStart_time.clear();
@@ -154,43 +179,74 @@ public class MillingProcessController implements Initializable {
             txtMilling_id.setText(txtMilling_id.getText()); // Forces refresh
             System.out.println("UI refreshed with ID: " + txtMilling_id.getText());
         });
+        loadTable(); // Refresh table data after clearing fields
+        // Disable update and delete buttons after clearing fields
+        btnUpdate.setDisable(true);
+        btnDelete.setDisable(true);
     }
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        String millingId = txtMilling_id.getText();
-        String paddy = txtPaddyid.getText();
-        Time starTime = Time.valueOf(txtStart_time.getText());
-        Time endTime = Time.valueOf(txtEnd_time.getText());
-        double milledQuantity = Double.parseDouble(txtMilledQuantity.getText());
-        double broken = Double.parseDouble(txtBrokenRice.getText());
-        double husk = Double.parseDouble(txtHusk.getText());
-        double bran = Double.parseDouble(txtBran.getText());
+        // Confirmation dialog for update
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Update Milling Process");
+        alert.setContentText("Are you sure you want to update this milling process?");
 
-        MillingProcessdto millingProcessdto = new MillingProcessdto(millingId,paddy,starTime,endTime,milledQuantity,broken,husk,bran);
-        try {
-            MillingProcessModel millingProcessModel = new MillingProcessModel();
-            boolean isisUpdate = MillingProcessModel.updateMillingProcess(millingProcessdto);
-            if(isisUpdate){
-                clearFields();
-                new Alert(Alert.AlertType.INFORMATION,"Milling Process updated").show();
-            }else {
-                new Alert(Alert.AlertType.ERROR,"Milling Process Not updated").show();
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            String millingId = txtMilling_id.getText();
+            String paddy = txtPaddyid.getText();
+
+            // Basic validation for time format before parsing
+            if (!txtStart_time.getText().matches(timePattern) || !txtEnd_time.getText().matches(timePattern)) {
+                new Alert(Alert.AlertType.ERROR, "Invalid Time Format. Please use HH:MM:SS.").show();
+                return;
             }
 
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR,"Something went wrong").show();
-        }
+            Time starTime = Time.valueOf(txtStart_time.getText());
+            Time endTime = Time.valueOf(txtEnd_time.getText());
 
+            // Basic validation for numeric fields
+            double milledQuantity, broken, husk, bran;
+            try {
+                milledQuantity = Double.parseDouble(txtMilledQuantity.getText());
+                broken = Double.parseDouble(txtBrokenRice.getText());
+                husk = Double.parseDouble(txtHusk.getText());
+                bran = Double.parseDouble(txtBran.getText());
+            } catch (NumberFormatException e) {
+                new Alert(Alert.AlertType.ERROR, "Invalid numeric input. Please enter valid numbers for quantities.").show();
+                return;
+            }
+
+            MillingProcessdto millingProcessdto = new MillingProcessdto(millingId,paddy,starTime,endTime,milledQuantity,broken,husk,bran);
+            try {
+                // No need to instantiate MillingProcessModel here, as updateMillingProcess is static
+                boolean isUpdate = MillingProcessModel.updateMillingProcess(millingProcessdto);
+                if(isUpdate){
+                    new Alert(Alert.AlertType.INFORMATION,"Milling Process Updated Successfully").show();
+                    clearFields();
+                }else {
+                    new Alert(Alert.AlertType.ERROR,"Milling Process Not Updated").show();
+                }
+
+            }catch (Exception e){
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR,"Something went wrong while updating milling process").show();
+            }
+        }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Disable update and delete buttons initially
+        btnUpdate.setDisable(true);
+        btnDelete.setDisable(true);
+
         try {
             loadNextId();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error loading next ID on initialization", e);
         }
         loadTable();
     }
@@ -198,6 +254,7 @@ public class MillingProcessController implements Initializable {
     private void loadNextId() throws SQLException {
         String id = new MillingProcessModel().getNextId();
         txtMilling_id.setText(id);
+        txtMilling_id.setEditable(false); // Make ID field non-editable
     }
 
     private void loadTable() {
@@ -211,22 +268,23 @@ public class MillingProcessController implements Initializable {
         colBran_rice.setCellValueFactory(new PropertyValueFactory<>("bran"));
 
         try {
-            MillingProcessModel millingProcessModel = new MillingProcessModel();
+            // No need to instantiate MillingProcessModel here, as viewAllMillingProcess is static
             ArrayList<MillingProcessdto> millingProcessdtos = MillingProcessModel.viewAllMillingProcess();
             if(millingProcessdtos != null) {
                 ObservableList<MillingProcessdto> observableList = FXCollections.observableList(millingProcessdtos);
                 table.setItems(observableList);
-            }else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
+            } else {
+                new Alert(Alert.AlertType.ERROR, "No milling process data was retrieved.").show();
             }
 
-        }catch (Exception e){
+        } catch (Exception e){
             e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Failed to load milling process data").show();
         }
     }
 
     public void tableColumnOnClicked(MouseEvent mouseEvent) {
-        MillingProcessdto millingProcessdto = (MillingProcessdto) table.getSelectionModel().getSelectedItem();
+        MillingProcessdto millingProcessdto = table.getSelectionModel().getSelectedItem();
         if (millingProcessdto != null) {
             txtMilling_id.setText(millingProcessdto.getMillingId());
             txtPaddyid.setText(millingProcessdto.getPaddyId());
@@ -237,6 +295,10 @@ public class MillingProcessController implements Initializable {
             txtHusk.setText(String.valueOf(millingProcessdto.getHusk()));
             txtBran.setText(String.valueOf(millingProcessdto.getBran()));
 
+            // Enable update and delete buttons when a milling process is selected
+            btnUpdate.setDisable(false);
+            btnDelete.setDisable(false);
+            btnSave.setDisable(true);
         }
     }
 }

@@ -9,22 +9,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import lk.ijse.gdse74.mytest2.responsive.dto.Farmersdto;
 import lk.ijse.gdse74.mytest2.responsive.dto.Inventorydto;
-import lk.ijse.gdse74.mytest2.responsive.model.CustomerModel;
-import lk.ijse.gdse74.mytest2.responsive.model.FarmersModel;
 import lk.ijse.gdse74.mytest2.responsive.model.InventoryModel;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Optional; // Import Optional for confirmation dialogs
 import java.util.ResourceBundle;
 import java.sql.Date;
-
-import static java.util.Date.*;
 
 public class InventoryController implements Initializable {
 
@@ -62,7 +56,7 @@ public class InventoryController implements Initializable {
     private TextField txtLatUpdated;
 
     @FXML
-    private TextField txtProductId;
+    private TextField txtProductId; // This field is not used, as cmbProductId is used instead.
 
     @FXML
     private ComboBox<String> cmbProductId;
@@ -73,64 +67,89 @@ public class InventoryController implements Initializable {
     @FXML
     void btnClearOnAction(ActionEvent event) throws SQLException {
         clearFields();
-
+        // After clearing, disable update and delete buttons
+        btnUpdate.setDisable(true);
+        btnDelete.setDisable(true);
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        String id = txtId.getText();
-        try {
-            InventoryModel inventoryModel = new InventoryModel();
-            boolean isDelete = inventoryModel.deleteInventory(new Inventorydto(id));
-            if (isDelete) {
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION,"Deleted successfully").show();
+        // Confirmation dialog for delete
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Delete Inventory Item");
+        alert.setContentText("Are you sure you want to delete this inventory item? This action cannot be undone.");
 
-            }else {
-                Alert alert = new Alert(Alert.AlertType.ERROR,"Delete failed");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            String id = txtId.getText();
+            try {
+                InventoryModel inventoryModel = new InventoryModel();
+                boolean isDelete = inventoryModel.deleteInventory(new Inventorydto(id));
+                if (isDelete) {
+                    new Alert(Alert.AlertType.INFORMATION,"Deleted successfully").show();
+                    clearFields(); // Clear fields and refresh table
+                }else {
+                    new Alert(Alert.AlertType.ERROR,"Delete failed").show();
+                }
+
+            }catch (Exception e){
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR,"Failed to delete inventory item").show();
             }
-
-        }catch (Exception e){
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR,"Delete failed");
-
-
         }
-
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) throws ParseException, SQLException, ClassNotFoundException {
+    void btnSaveOnAction(ActionEvent event) {
+        // Basic validation for CurrentStock
+        int CurrentStock;
+        try {
+            CurrentStock = Integer.parseInt(txt_CurrentStock.getText());
+        } catch (NumberFormatException e) {
+            new Alert(Alert.AlertType.ERROR, "Invalid input for Current Stock. Please enter a number.").show();
+            return;
+        }
 
-        int CurrentStock = Integer.parseInt(txt_CurrentStock.getText());
-        Date lastupdate = Date.valueOf(txtLatUpdated.getText());
+        // Basic validation for Last Updated Date
+        Date lastupdate;
+        try {
+            lastupdate = Date.valueOf(txtLatUpdated.getText());
+        } catch (IllegalArgumentException e) {
+            new Alert(Alert.AlertType.ERROR, "Invalid date format for Last Updated. Please use YYYY-MM-DD.").show();
+            return;
+        }
 
-        Inventorydto inventorydto = new Inventorydto(txtId.getText(),cmbProductId.getValue(),CurrentStock,lastupdate);
+        // Check if a product ID is selected from the ComboBox
+        String selectedProductId = cmbProductId.getValue();
+        if (selectedProductId == null || selectedProductId.isEmpty()) {
+            new Alert(Alert.AlertType.ERROR, "Please select a Product ID.").show();
+            return;
+        }
+
+        Inventorydto inventorydto = new Inventorydto(txtId.getText(), selectedProductId, CurrentStock, lastupdate);
         try {
             InventoryModel inventoryModel = new InventoryModel();
             boolean isSave = inventoryModel.saveInventory(inventorydto);
             if (isSave) {
-                clearFields();
-
-                new Alert(Alert.AlertType.INFORMATION, "Inventory Saved").show();
+                new Alert(Alert.AlertType.INFORMATION, "Inventory Saved Successfully").show();
+                clearFields(); // Clear fields and refresh table
             } else {
                 new Alert(Alert.AlertType.ERROR, "Inventory Not Saved").show();
             }
         }catch (Exception e){
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Inventory Not aSaved").show();
+            new Alert(Alert.AlertType.ERROR, "Something went wrong while saving inventory").show();
         }
-
     }
 
     private void clearFields() throws SQLException {
-
-        txtId.setText("");
-
-        txtLatUpdated.setText("");
-        txt_CurrentStock.setText("");
+        txtId.clear();
+        txtLatUpdated.clear();
+        txt_CurrentStock.clear();
+        cmbProductId.getSelectionModel().clearSelection(); // Clear ComboBox selection
         loadNextId();
+        txtLatUpdated.setText(LocalDate.now().toString()); // Set current date after clearing
         Platform.runLater(() -> {
             txtId.setText(txtId.getText()); // Forces refresh
             System.out.println("UI refreshed with ID: " + txtId.getText());
@@ -138,35 +157,69 @@ public class InventoryController implements Initializable {
 
         // Refresh table
         loadTable();
-
-
+        // Disable update and delete buttons after clearing fields
+        btnUpdate.setDisable(true);
+        btnDelete.setDisable(true);
     }
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-        int CurrentStock = Integer.parseInt(txt_CurrentStock.getText());
-        Date lastupdate = Date.valueOf(txtLatUpdated.getText());
+        // Confirmation dialog for update
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Update Inventory Item");
+        alert.setContentText("Are you sure you want to update this inventory item?");
 
-        Inventorydto inventorydto = new Inventorydto(txtId.getText(),cmbProductId.getValue(),CurrentStock,lastupdate);
-        try {
-            InventoryModel inventoryModel = new InventoryModel();
-            boolean isUpdate = inventoryModel.updateInventory(inventorydto);
-            if (isUpdate) {
-                clearFields();
-
-                new Alert(Alert.AlertType.INFORMATION, "Inventory updated").show();
-            } else {
-                new Alert(Alert.AlertType.ERROR, "Inventory Not updated").show();
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // Basic validation for CurrentStock
+            int CurrentStock;
+            try {
+                CurrentStock = Integer.parseInt(txt_CurrentStock.getText());
+            } catch (NumberFormatException e) {
+                new Alert(Alert.AlertType.ERROR, "Invalid input for Current Stock. Please enter a number.").show();
+                return;
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Inventory Not updated").show();
-        }
 
+            // Basic validation for Last Updated Date
+            Date lastupdate;
+            try {
+                lastupdate = Date.valueOf(txtLatUpdated.getText());
+            } catch (IllegalArgumentException e) {
+                new Alert(Alert.AlertType.ERROR, "Invalid date format for Last Updated. Please use YYYY-MM-DD.").show();
+                return;
+            }
+
+            // Check if a product ID is selected from the ComboBox
+            String selectedProductId = cmbProductId.getValue();
+            if (selectedProductId == null || selectedProductId.isEmpty()) {
+                new Alert(Alert.AlertType.ERROR, "Please select a Product ID.").show();
+                return;
+            }
+
+            Inventorydto inventorydto = new Inventorydto(txtId.getText(), selectedProductId, CurrentStock, lastupdate);
+            try {
+                InventoryModel inventoryModel = new InventoryModel();
+                boolean isUpdate = inventoryModel.updateInventory(inventorydto);
+                if (isUpdate) {
+                    new Alert(Alert.AlertType.INFORMATION, "Inventory updated successfully").show();
+                    clearFields(); // Clear fields and refresh table
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Inventory Not updated").show();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Something went wrong while updating inventory").show();
+            }
+        }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Disable update and delete buttons initially
+        btnUpdate.setDisable(true);
+        btnDelete.setDisable(true);
+
         loadTable();
         try {
             loadNextId();
@@ -175,14 +228,14 @@ public class InventoryController implements Initializable {
             loadProductIds();
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error during initialization: " + e.getMessage(), e);
         }
     }
 
     private void loadProductIds() throws SQLException {
         ArrayList<String> productIdList = InventoryModel.getAllproductIds();
         ObservableList<String> productIds = FXCollections.observableArrayList(productIdList);
-        productIds.addAll(productIdList);
+        // Add all product IDs to the ComboBox
         cmbProductId.setItems(productIds);
     }
 
@@ -190,12 +243,11 @@ public class InventoryController implements Initializable {
         try {
             String nextId = new InventoryModel().getNextId();
             txtId.setText(nextId);
-            txtId.setEditable(false);
+            txtId.setEditable(false); // Make ID field non-editable
             System.out.println("DEBUG: Next ID retrieved: " + nextId); // Debug line
             if (nextId == null || nextId.isEmpty()) {
                 System.out.println("DEBUG: Got empty or null ID"); // Debug line
             }
-            txtId.setText(nextId);
         } catch (SQLException e) {
             System.err.println("ERROR in loadNextId: " + e.getMessage()); // Debug line
             e.printStackTrace();
@@ -210,17 +262,18 @@ public class InventoryController implements Initializable {
         colLastupdated.setCellValueFactory(new PropertyValueFactory<>("lastUpdated"));
 
         try {
-            Inventorydto inventorymodel = new Inventorydto();
+            // No need to instantiate Inventorydto here, as viewAllInventory is static
             ArrayList<Inventorydto> inventorydtos = InventoryModel.viewAllInventory();
             if(inventorydtos != null) {
                 ObservableList<Inventorydto> inventory = FXCollections.observableArrayList(inventorydtos);
                 table.setItems(inventory);
             }else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
+                new Alert(Alert.AlertType.INFORMATION, "No inventory data found.").show();
             }
 
         }catch (Exception e){
             e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Failed to load inventory data").show();
         }
     }
 
@@ -233,14 +286,18 @@ public class InventoryController implements Initializable {
 
         // Update form fields
         txtId.setText(selectedItem.getId());
-        cmbProductId.setValue(selectedItem.getProductId()); // Changed to setValue for ComboBox
-        txt_CurrentStock.setText(selectedItem.getCurrentStockBags() + "");
-        txtLatUpdated.setText(selectedItem.getLastUpdated() + "");
+        cmbProductId.setValue(selectedItem.getProductId()); // Set selected value for ComboBox
+        txt_CurrentStock.setText(String.valueOf(selectedItem.getCurrentStockBags())); // Convert int to String
+        txtLatUpdated.setText(String.valueOf(selectedItem.getLastUpdated())); // Convert Date to String
+
+        // Enable update and delete buttons when an item is selected
+        btnUpdate.setDisable(false);
+        btnDelete.setDisable(false);
+        btnSave.setDisable(true);
     }
 
     public void cmbProductIdOnAction(ActionEvent actionEvent) {
-        String selectedItem = (String) cmbProductId.getSelectionModel().getSelectedItem();
-        System.out.println(selectedItem);
-
+        String selectedItem = cmbProductId.getSelectionModel().getSelectedItem();
+        System.out.println("Selected Product ID: " + selectedItem);
     }
 }

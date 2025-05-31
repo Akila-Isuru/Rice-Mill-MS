@@ -9,8 +9,8 @@ import java.util.ArrayList;
 
 public class QualityCheckModel {
     public static ArrayList<QualityCheckdto> viewAllQualityCheck() throws SQLException, ClassNotFoundException {
-        ResultSet rs = CrudUtill.execute("select * from quality_check");
-        ArrayList<QualityCheckdto> Checklist = new ArrayList<>();
+        ResultSet rs = CrudUtill.execute("SELECT * FROM quality_check");
+        ArrayList<QualityCheckdto> checklist = new ArrayList<>();
         while (rs.next()) {
             QualityCheckdto qualityCheckdto = new QualityCheckdto(
                     rs.getString("check_id"),
@@ -19,15 +19,15 @@ public class QualityCheckModel {
                     rs.getString("foreign_material"),
                     rs.getString("broken_precentage"),
                     rs.getDate("inspection_date")
-
             );
-            Checklist.add(qualityCheckdto);
+            checklist.add(qualityCheckdto);
         }
-        return Checklist;
+        return checklist;
     }
-    public  boolean saveQualityCheck(QualityCheckdto qualityCheckdto) throws SQLException, ClassNotFoundException {
+
+    public boolean saveQualityCheck(QualityCheckdto qualityCheckdto) throws SQLException, ClassNotFoundException {
         return CrudUtill.execute(
-                "insert into quality_check values (?,?,?,?,?,?)",
+                "INSERT INTO quality_check VALUES (?,?,?,?,?,?)",
                 qualityCheckdto.getCheckId(),
                 qualityCheckdto.getPaddyId(),
                 qualityCheckdto.getMoistureLevel(),
@@ -36,22 +36,36 @@ public class QualityCheckModel {
                 qualityCheckdto.getInceptionDate()
         );
     }
+
     public boolean deleteQualityCheck(QualityCheckdto qualityCheckdto) throws SQLException, ClassNotFoundException {
-        String sql = "delete from quality_check where check_id=?";
+        String sql = "DELETE FROM quality_check WHERE check_id=?";
         return CrudUtill.execute(sql, qualityCheckdto.getCheckId());
     }
+
     public boolean updateQualityCheck(QualityCheckdto qualityCheckdto) throws SQLException, ClassNotFoundException {
         return CrudUtill.execute(
-                "update quality_check set paddy_id =?,moisture_level =?,foreign_material =?,broken_precentage =?,inspection_date =? where check_id=?",
-                  qualityCheckdto.getPaddyId(),
+                "UPDATE quality_check SET paddy_id=?, moisture_level=?, foreign_material=?, broken_precentage=?, inspection_date=? WHERE check_id=?",
+                qualityCheckdto.getPaddyId(),
                 qualityCheckdto.getMoistureLevel(),
                 qualityCheckdto.getForeignMaterial(),
                 qualityCheckdto.getBrokenPrecentage(),
                 qualityCheckdto.getInceptionDate(),
                 qualityCheckdto.getCheckId()
-
         );
     }
 
-
+    public String getNextId() throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = CrudUtill.execute("SELECT check_id FROM quality_check ORDER BY check_id DESC LIMIT 1");
+        if (resultSet.next()) {
+            String lastId = resultSet.getString(1);
+            try {
+                int lastIdNumber = Integer.parseInt(lastId.substring(2)); // Skip 'QC' and parse to int
+                return String.format("QC%03d", lastIdNumber + 1); // Increment and format
+            } catch (NumberFormatException e) {
+                // If parsing fails, return QC001
+                return "QC001";
+            }
+        }
+        return "QC001"; // If no records found, start with QC001
+    }
 }

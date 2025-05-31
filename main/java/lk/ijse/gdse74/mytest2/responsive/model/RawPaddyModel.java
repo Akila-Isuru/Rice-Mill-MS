@@ -25,6 +25,7 @@ public class RawPaddyModel {
         }
         return paddys;
     }
+
     public boolean SaveRawPaddy(RawPaddydto rawPaddydto) throws ClassNotFoundException, SQLException {
         return CrudUtill.execute(
                 "insert into raw_paddy values (?,?,?,?,?,?,?)",
@@ -35,24 +36,34 @@ public class RawPaddyModel {
                 rawPaddydto.getMoisture(),
                 rawPaddydto.getPurchasePrice(),
                 rawPaddydto.getPurchaseDate()
-
         );
     }
+
     public boolean deleteRawPaddy(RawPaddydto rawPaddydto) throws ClassNotFoundException, SQLException {
         String sql = "delete from raw_paddy where paddy_id=?";
         return CrudUtill.execute(sql, rawPaddydto.getPaddyId());
     }
+
     public boolean updateRawPaddy(RawPaddydto rawPaddydto) throws ClassNotFoundException, SQLException {
         return CrudUtill.execute(
-               "update raw_paddy set supplier_id=?,farmer_id=?,quantity_kg=?,moisture_level=?,purchase_price_per_kg=?,purchase_date=? where paddy_id =?",
-               rawPaddydto.getSupplierId(),
-               rawPaddydto.getFarmerId(),
-               rawPaddydto.getQuantity(),
-               rawPaddydto.getMoisture(),
-               rawPaddydto.getPurchasePrice(),
-               rawPaddydto.getPurchaseDate(),
-               rawPaddydto.getPaddyId()
+                "update raw_paddy set supplier_id=?,farmer_id=?,quantity_kg=?,moisture_level=?,purchase_price_per_kg=?,purchase_date=? where paddy_id =?",
+                rawPaddydto.getSupplierId(),
+                rawPaddydto.getFarmerId(),
+                rawPaddydto.getQuantity(),
+                rawPaddydto.getMoisture(),
+                rawPaddydto.getPurchasePrice(),
+                rawPaddydto.getPurchaseDate(),
+                rawPaddydto.getPaddyId()
         );
     }
-}
 
+    public String getNextId() throws SQLException, ClassNotFoundException {
+        ResultSet rs = CrudUtill.execute("SELECT paddy_id FROM raw_paddy ORDER BY paddy_id DESC LIMIT 1");
+        if (rs.next()) {
+            String lastId = rs.getString("paddy_id");
+            int nextNum = Integer.parseInt(lastId.substring(1)) + 1;
+            return String.format("P%03d", nextNum);
+        }
+        return "P001"; // Return first ID if no records exist
+    }
+}
