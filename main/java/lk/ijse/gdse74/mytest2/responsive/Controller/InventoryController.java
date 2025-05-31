@@ -16,11 +16,16 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Optional; // Import Optional for confirmation dialogs
+import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.sql.Date;
 
 public class InventoryController implements Initializable {
+
+    // Threshold constants for stock levels
+    private static final int LOW_STOCK_THRESHOLD = 10;
+    private static final int CRITICAL_STOCK_THRESHOLD = 5;
 
     @FXML
     private Button btnClear;
@@ -35,16 +40,16 @@ public class InventoryController implements Initializable {
     private Button btnUpdate;
 
     @FXML
-    private TableColumn<Inventorydto,Integer> colCurrentStockBags;
+    private TableColumn<Inventorydto, Integer> colCurrentStockBags;
 
     @FXML
-    private TableColumn<Inventorydto,String> colInventory_id;
+    private TableColumn<Inventorydto, String> colInventory_id;
 
     @FXML
     private TableColumn<Inventorydto, Date> colLastupdated;
 
     @FXML
-    private TableColumn<Inventorydto,String> colProduct_id;
+    private TableColumn<Inventorydto, String> colProduct_id;
 
     @FXML
     private TableView<Inventorydto> table;
@@ -56,29 +61,28 @@ public class InventoryController implements Initializable {
     private TextField txtLatUpdated;
 
     @FXML
-    private TextField txtProductId; // This field is not used, as cmbProductId is used instead.
-
-    @FXML
     private ComboBox<String> cmbProductId;
 
     @FXML
     private TextField txt_CurrentStock;
 
     @FXML
+    private Label lblStockStatus;
+
+    @FXML
     void btnClearOnAction(ActionEvent event) throws SQLException {
         clearFields();
-        // After clearing, disable update and delete buttons
         btnUpdate.setDisable(true);
         btnDelete.setDisable(true);
+        lblStockStatus.setVisible(false);
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        // Confirmation dialog for delete
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText("Delete Inventory Item");
-        alert.setContentText("Are you sure you want to delete this inventory item? This action cannot be undone.");
+        alert.setContentText("Are you sure you want to delete this inventory item?");
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -87,84 +91,50 @@ public class InventoryController implements Initializable {
                 InventoryModel inventoryModel = new InventoryModel();
                 boolean isDelete = inventoryModel.deleteInventory(new Inventorydto(id));
                 if (isDelete) {
-                    new Alert(Alert.AlertType.INFORMATION,"Deleted successfully").show();
-                    clearFields(); // Clear fields and refresh table
-                }else {
-                    new Alert(Alert.AlertType.ERROR,"Delete failed").show();
+                    showAlert("Deleted successfully", Alert.AlertType.INFORMATION);
+                    clearFields();
+                } else {
+                    showAlert("Delete failed", Alert.AlertType.ERROR);
                 }
-
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-                new Alert(Alert.AlertType.ERROR,"Failed to delete inventory item").show();
+                showAlert("Failed to delete inventory item", Alert.AlertType.ERROR);
             }
         }
     }
 
     @FXML
     void btnSaveOnAction(ActionEvent event) {
-        // Basic validation for CurrentStock
-        int CurrentStock;
-        try {
-            CurrentStock = Integer.parseInt(txt_CurrentStock.getText());
-        } catch (NumberFormatException e) {
-            new Alert(Alert.AlertType.ERROR, "Invalid input for Current Stock. Please enter a number.").show();
-            return;
-        }
+        if (!validateInputs()) return;
 
-        // Basic validation for Last Updated Date
-        Date lastupdate;
-        try {
-            lastupdate = Date.valueOf(txtLatUpdated.getText());
-        } catch (IllegalArgumentException e) {
-            new Alert(Alert.AlertType.ERROR, "Invalid date format for Last Updated. Please use YYYY-MM-DD.").show();
-            return;
-        }
-
-        // Check if a product ID is selected from the ComboBox
+        int currentStock = Integer.parseInt(txt_CurrentStock.getText());
+        Date lastUpdate = Date.valueOf(txtLatUpdated.getText());
         String selectedProductId = cmbProductId.getValue();
-        if (selectedProductId == null || selectedProductId.isEmpty()) {
-            new Alert(Alert.AlertType.ERROR, "Please select a Product ID.").show();
-            return;
-        }
 
-        Inventorydto inventorydto = new Inventorydto(txtId.getText(), selectedProductId, CurrentStock, lastupdate);
+        Inventorydto inventorydto = new Inventorydto(
+                txtId.getText(),
+                selectedProductId,
+                currentStock,
+                lastUpdate
+        );
+
         try {
             InventoryModel inventoryModel = new InventoryModel();
             boolean isSave = inventoryModel.saveInventory(inventorydto);
             if (isSave) {
-                new Alert(Alert.AlertType.INFORMATION, "Inventory Saved Successfully").show();
-                clearFields(); // Clear fields and refresh table
+                showAlert("Inventory Saved Successfully", Alert.AlertType.INFORMATION);
+                clearFields();
             } else {
-                new Alert(Alert.AlertType.ERROR, "Inventory Not Saved").show();
+                showAlert("Inventory Not Saved", Alert.AlertType.ERROR);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Something went wrong while saving inventory").show();
+            showAlert("Something went wrong while saving inventory", Alert.AlertType.ERROR);
         }
-    }
-
-    private void clearFields() throws SQLException {
-        txtId.clear();
-        txtLatUpdated.clear();
-        txt_CurrentStock.clear();
-        cmbProductId.getSelectionModel().clearSelection(); // Clear ComboBox selection
-        loadNextId();
-        txtLatUpdated.setText(LocalDate.now().toString()); // Set current date after clearing
-        Platform.runLater(() -> {
-            txtId.setText(txtId.getText()); // Forces refresh
-            System.out.println("UI refreshed with ID: " + txtId.getText());
-        });
-
-        // Refresh table
-        loadTable();
-        // Disable update and delete buttons after clearing fields
-        btnUpdate.setDisable(true);
-        btnDelete.setDisable(true);
     }
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-        // Confirmation dialog for update
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText("Update Inventory Item");
@@ -172,53 +142,60 @@ public class InventoryController implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            // Basic validation for CurrentStock
-            int CurrentStock;
-            try {
-                CurrentStock = Integer.parseInt(txt_CurrentStock.getText());
-            } catch (NumberFormatException e) {
-                new Alert(Alert.AlertType.ERROR, "Invalid input for Current Stock. Please enter a number.").show();
-                return;
-            }
+            if (!validateInputs()) return;
 
-            // Basic validation for Last Updated Date
-            Date lastupdate;
-            try {
-                lastupdate = Date.valueOf(txtLatUpdated.getText());
-            } catch (IllegalArgumentException e) {
-                new Alert(Alert.AlertType.ERROR, "Invalid date format for Last Updated. Please use YYYY-MM-DD.").show();
-                return;
-            }
-
-            // Check if a product ID is selected from the ComboBox
+            int currentStock = Integer.parseInt(txt_CurrentStock.getText());
+            Date lastUpdate = Date.valueOf(txtLatUpdated.getText());
             String selectedProductId = cmbProductId.getValue();
-            if (selectedProductId == null || selectedProductId.isEmpty()) {
-                new Alert(Alert.AlertType.ERROR, "Please select a Product ID.").show();
-                return;
-            }
 
-            Inventorydto inventorydto = new Inventorydto(txtId.getText(), selectedProductId, CurrentStock, lastupdate);
+            Inventorydto inventorydto = new Inventorydto(
+                    txtId.getText(),
+                    selectedProductId,
+                    currentStock,
+                    lastUpdate
+            );
+
             try {
                 InventoryModel inventoryModel = new InventoryModel();
                 boolean isUpdate = inventoryModel.updateInventory(inventorydto);
                 if (isUpdate) {
-                    new Alert(Alert.AlertType.INFORMATION, "Inventory updated successfully").show();
-                    clearFields(); // Clear fields and refresh table
+                    showAlert("Inventory updated successfully", Alert.AlertType.INFORMATION);
+                    clearFields();
                 } else {
-                    new Alert(Alert.AlertType.ERROR, "Inventory Not updated").show();
+                    showAlert("Inventory Not updated", Alert.AlertType.ERROR);
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "Something went wrong while updating inventory").show();
+                showAlert("Something went wrong while updating inventory", Alert.AlertType.ERROR);
             }
+        }
+    }
+
+    @FXML
+    void validateStockInput() {
+        try {
+            int stock = Integer.parseInt(txt_CurrentStock.getText());
+            if (stock < CRITICAL_STOCK_THRESHOLD) {
+                lblStockStatus.setText("CRITICAL STOCK LEVEL!");
+                lblStockStatus.setStyle("-fx-text-fill: #e74c3c;");
+                lblStockStatus.setVisible(true);
+            } else if (stock < LOW_STOCK_THRESHOLD) {
+                lblStockStatus.setText("LOW STOCK WARNING");
+                lblStockStatus.setStyle("-fx-text-fill: #f39c12;");
+                lblStockStatus.setVisible(true);
+            } else {
+                lblStockStatus.setVisible(false);
+            }
+        } catch (NumberFormatException e) {
+            lblStockStatus.setVisible(false);
         }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Disable update and delete buttons initially
         btnUpdate.setDisable(true);
         btnDelete.setDisable(true);
+        lblStockStatus.setVisible(false);
 
         loadTable();
         try {
@@ -226,7 +203,6 @@ public class InventoryController implements Initializable {
             txtLatUpdated.setText(LocalDate.now().toString());
             txtLatUpdated.setEditable(false);
             loadProductIds();
-
         } catch (SQLException e) {
             throw new RuntimeException("Error during initialization: " + e.getMessage(), e);
         }
@@ -235,7 +211,6 @@ public class InventoryController implements Initializable {
     private void loadProductIds() throws SQLException {
         ArrayList<String> productIdList = InventoryModel.getAllproductIds();
         ObservableList<String> productIds = FXCollections.observableArrayList(productIdList);
-        // Add all product IDs to the ComboBox
         cmbProductId.setItems(productIds);
     }
 
@@ -243,15 +218,10 @@ public class InventoryController implements Initializable {
         try {
             String nextId = new InventoryModel().getNextId();
             txtId.setText(nextId);
-            txtId.setEditable(false); // Make ID field non-editable
-            System.out.println("DEBUG: Next ID retrieved: " + nextId); // Debug line
-            if (nextId == null || nextId.isEmpty()) {
-                System.out.println("DEBUG: Got empty or null ID"); // Debug line
-            }
+            txtId.setEditable(false);
         } catch (SQLException e) {
-            System.err.println("ERROR in loadNextId: " + e.getMessage()); // Debug line
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Error loading next ID").show();
+            showAlert("Error loading next ID", Alert.AlertType.ERROR);
         }
     }
 
@@ -262,38 +232,141 @@ public class InventoryController implements Initializable {
         colLastupdated.setCellValueFactory(new PropertyValueFactory<>("lastUpdated"));
 
         try {
-            // No need to instantiate Inventorydto here, as viewAllInventory is static
             ArrayList<Inventorydto> inventorydtos = InventoryModel.viewAllInventory();
-            if(inventorydtos != null) {
+            if (inventorydtos != null) {
                 ObservableList<Inventorydto> inventory = FXCollections.observableArrayList(inventorydtos);
                 table.setItems(inventory);
-            }else {
-                new Alert(Alert.AlertType.INFORMATION, "No inventory data found.").show();
-            }
 
-        }catch (Exception e){
+                // Add row factory for visual indicators
+                table.setRowFactory(tv -> new TableRow<Inventorydto>() {
+                    @Override
+                    protected void updateItem(Inventorydto item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (item == null || empty) {
+                            setStyle("");
+                        } else {
+                            if (item.getCurrentStockBags() < CRITICAL_STOCK_THRESHOLD) {
+                                setStyle("-fx-background-color: #ffdddd; -fx-font-weight: bold;");
+                            } else if (item.getCurrentStockBags() < LOW_STOCK_THRESHOLD) {
+                                setStyle("-fx-background-color: #fff3cd;");
+                            } else {
+                                setStyle("");
+                            }
+                        }
+                    }
+                });
+
+                checkCriticalStock(inventorydtos);
+            } else {
+                showAlert("No inventory data found", Alert.AlertType.INFORMATION);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Failed to load inventory data").show();
+            showAlert("Failed to load inventory data", Alert.AlertType.ERROR);
         }
     }
 
-    public void tableColumnOnClicked(MouseEvent mouseEvent) {
-        // Get selected item from table
-        Inventorydto selectedItem = table.getSelectionModel().getSelectedItem();
+    private void checkCriticalStock(ArrayList<Inventorydto> inventoryList) {
+        List<String> criticalItems = new ArrayList<>();
+        List<String> lowItems = new ArrayList<>();
 
-        // Only proceed if something is selected
+        for (Inventorydto item : inventoryList) {
+            if (item.getCurrentStockBags() < CRITICAL_STOCK_THRESHOLD) {
+                criticalItems.add(item.getId() + " (" + item.getProductId() + ") - Stock: " + item.getCurrentStockBags());
+            } else if (item.getCurrentStockBags() < LOW_STOCK_THRESHOLD) {
+                lowItems.add(item.getId() + " (" + item.getProductId() + ") - Stock: " + item.getCurrentStockBags());
+            }
+        }
+
+        if (!criticalItems.isEmpty()) {
+            showStockAlert("CRITICAL STOCK ALERT",
+                    "The following items have critically low stock levels:\n\n" +
+                            String.join("\n", criticalItems),
+                    Alert.AlertType.ERROR);
+        }
+
+        if (!lowItems.isEmpty()) {
+            showStockAlert("Low Stock Warning",
+                    "The following items have low stock levels:\n\n" +
+                            String.join("\n", lowItems),
+                    Alert.AlertType.WARNING);
+        }
+    }
+
+    private void clearFields() throws SQLException {
+        txtId.clear();
+        txtLatUpdated.clear();
+        txt_CurrentStock.clear();
+        cmbProductId.getSelectionModel().clearSelection();
+        loadNextId();
+        txtLatUpdated.setText(LocalDate.now().toString());
+        loadTable();
+        btnUpdate.setDisable(true);
+        btnDelete.setDisable(true);
+        btnSave.setDisable(false);
+        lblStockStatus.setVisible(false);
+    }
+
+    private boolean validateInputs() {
+        try {
+            Integer.parseInt(txt_CurrentStock.getText());
+        } catch (NumberFormatException e) {
+            showAlert("Invalid input for Current Stock", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        try {
+            Date.valueOf(txtLatUpdated.getText());
+        } catch (IllegalArgumentException e) {
+            showAlert("Invalid date format for Last Updated", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        String selectedProductId = cmbProductId.getValue();
+        if (selectedProductId == null || selectedProductId.isEmpty()) {
+            showAlert("Please select a Product ID", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        return true;
+    }
+
+    private void showAlert(String message, Alert.AlertType alertType) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(alertType);
+            alert.setTitle(alertType.name());
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.show();
+        });
+    }
+
+    private void showStockAlert(String title, String content, Alert.AlertType alertType) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(alertType);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(content);
+            alert.initOwner(table.getScene().getWindow());
+            alert.show();
+        });
+    }
+
+    public void tableColumnOnClicked(MouseEvent mouseEvent) {
+        Inventorydto selectedItem = table.getSelectionModel().getSelectedItem();
         if (selectedItem == null) return;
 
-        // Update form fields
         txtId.setText(selectedItem.getId());
-        cmbProductId.setValue(selectedItem.getProductId()); // Set selected value for ComboBox
-        txt_CurrentStock.setText(String.valueOf(selectedItem.getCurrentStockBags())); // Convert int to String
-        txtLatUpdated.setText(String.valueOf(selectedItem.getLastUpdated())); // Convert Date to String
+        cmbProductId.setValue(selectedItem.getProductId());
+        txt_CurrentStock.setText(String.valueOf(selectedItem.getCurrentStockBags()));
+        txtLatUpdated.setText(String.valueOf(selectedItem.getLastUpdated()));
 
-        // Enable update and delete buttons when an item is selected
         btnUpdate.setDisable(false);
         btnDelete.setDisable(false);
         btnSave.setDisable(true);
+
+        validateStockInput();
     }
 
     public void cmbProductIdOnAction(ActionEvent actionEvent) {

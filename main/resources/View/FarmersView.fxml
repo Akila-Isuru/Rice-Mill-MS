@@ -8,17 +8,23 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: #f5f9fc;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse74.mytest2.responsive.Controller.FarmersController">
    <children>
-      <Label layoutX="20.0" layoutY="20.0" style="-fx-text-fill: #2c3e50;" text="Farmer Management">
-         <font>
-            <Font name="System Bold" size="22.0" />
-         </font>
-      </Label>
+      <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="20.0" spacing="20.0">
+         <children>
+            <Label style="-fx-text-fill: #2c3e50;" text="Farmer Management">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblFarmerCount" style="-fx-text-fill: #2980b9; -fx-font-weight: bold;" text="Farmers: 0" />
+         </children>
+      </HBox>
 
       <VBox layoutX="50.0" layoutY="60.0" prefHeight="250.0" prefWidth="800.0" spacing="8.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);">
          <children>
@@ -40,7 +46,13 @@
          </padding>
       </VBox>
 
-      <ButtonBar layoutX="50.0" layoutY="350.0" prefHeight="40.0" prefWidth="800.0" style="-fx-background-color: transparent; -fx-padding: 10 0 10 0;">
+      <HBox layoutX="763.0" layoutY="26.0" prefHeight="32.0" prefWidth="52.0" spacing="10.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#clearSearch" style="-fx-background-color: #bdc3c7; -fx-background-radius: 3;" text="Clear" />
+         </children>
+      </HBox>
+
+      <ButtonBar layoutX="50.0" layoutY="367.0" prefHeight="40.0" prefWidth="800.0" style="-fx-background-color: transparent; -fx-padding: 10 0 10 0;">
          <buttons>
             <Button fx:id="btnSave" minWidth="80.0" mnemonicParsing="false" onAction="#btnSaveOnAction" prefHeight="30.0" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-background-radius: 3;" text="Save">
                <font>
@@ -65,7 +77,7 @@
          </buttons>
       </ButtonBar>
 
-      <TableView fx:id="tfarmersTable" layoutX="50.0" layoutY="415.0" onMouseClicked="#tableColumnOnClicked" prefHeight="270.0" prefWidth="800.0" style="-fx-background-radius: 5; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);">
+      <TableView fx:id="tfarmersTable" layoutX="50.0" layoutY="432.0" onMouseClicked="#tableColumnOnClicked" prefHeight="270.0" prefWidth="800.0" style="-fx-background-radius: 5; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);">
          <columns>
             <TableColumn fx:id="colid" prefWidth="120.0" style="-fx-font-size: 12;" text="Farmer ID" />
             <TableColumn fx:id="colname" prefWidth="180.0" style="-fx-font-size: 12;" text="Name" />
@@ -73,6 +85,7 @@
             <TableColumn fx:id="coladdress" prefWidth="200.0" style="-fx-font-size: 12;" text="Address" />
          </columns>
       </TableView>
+      <TextField fx:id="txtSearch" layoutX="329.0" layoutY="26.0" onKeyReleased="#searchFarmer" prefHeight="27.0" prefWidth="427.0" promptText="Search farmers..." style="-fx-background-radius: 3; -fx-border-color: #bdc3c7; -fx-border-radius: 3;" />
    </children>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

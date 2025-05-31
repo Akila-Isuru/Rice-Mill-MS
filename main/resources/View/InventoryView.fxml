@@ -13,7 +13,16 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: #f5f9fc;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse74.mytest2.responsive.Controller.InventoryController">
+<?import java.net.URL?>
+<AnchorPane prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: #f5f9fc;"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="lk.ijse.gdse74.mytest2.responsive.Controller.InventoryController">
+
+   <stylesheets>
+      <URL value="@../View/inventory.css" />
+   </stylesheets>
+
    <children>
       <Label layoutX="20.0" layoutY="20.0" style="-fx-text-fill: #2c3e50;" text="Inventory Management">
          <font>
@@ -21,16 +30,19 @@
          </font>
       </Label>
 
-      <VBox layoutX="50.0" layoutY="60.0" prefHeight="220.0" prefWidth="800.0" spacing="8.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);">
+      <VBox layoutX="50.0" layoutY="60.0" prefHeight="220.0" prefWidth="800.0" spacing="8.0"
+            style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #34495e; -fx-font-size: 12;" text="Inventory ID" />
             <TextField fx:id="txtId" style="-fx-background-radius: 3; -fx-border-color: #bdc3c7; -fx-border-radius: 3;" />
 
             <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #34495e; -fx-font-size: 12;" text="Product ID" />
-            <ComboBox fx:id="cmbProductId" onAction="#cmbProductIdOnAction" prefWidth="150.0" />
+            <ComboBox fx:id="cmbProductId" onAction="#cmbProductIdOnAction" prefWidth="150.0"
+                      style="-fx-background-radius: 3; -fx-border-color: #bdc3c7; -fx-border-radius: 3;" />
 
             <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #34495e; -fx-font-size: 12;" text="Current Stock (Bags)" />
-            <TextField fx:id="txt_CurrentStock" style="-fx-background-radius: 3; -fx-border-color: #bdc3c7; -fx-border-radius: 3;" />
+            <TextField fx:id="txt_CurrentStock" onKeyReleased="#validateStockInput"
+                       style="-fx-background-radius: 3; -fx-border-color: #bdc3c7; -fx-border-radius: 3;" />
 
             <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #34495e; -fx-font-size: 12;" text="Last Updated" />
             <TextField fx:id="txtLatUpdated" style="-fx-background-radius: 3; -fx-border-color: #bdc3c7; -fx-border-radius: 3;" />
@@ -40,24 +52,33 @@
          </padding>
       </VBox>
 
-      <ButtonBar layoutX="47.0" layoutY="328.0" prefHeight="40.0" prefWidth="800.0" style="-fx-background-color: transparent; -fx-padding: 10 0 10 0;">
+      <ButtonBar layoutX="47.0" layoutY="328.0" prefHeight="40.0" prefWidth="800.0"
+                 style="-fx-background-color: transparent; -fx-padding: 10 0 10 0;">
          <buttons>
-            <Button fx:id="btnSave" minWidth="80.0" mnemonicParsing="false" onAction="#btnSaveOnAction" prefHeight="30.0" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-background-radius: 3;" text="Save">
+            <Button fx:id="btnSave" minWidth="80.0" mnemonicParsing="false" onAction="#btnSaveOnAction"
+                    prefHeight="30.0" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-background-radius: 3;"
+                    text="Save">
                <font>
                   <Font size="12.0" />
                </font>
             </Button>
-            <Button fx:id="btnUpdate" minWidth="80.0" mnemonicParsing="false" onAction="#btnUpdateOnAction" prefHeight="30.0" style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-background-radius: 3;" text="Update">
+            <Button fx:id="btnUpdate" minWidth="80.0" mnemonicParsing="false" onAction="#btnUpdateOnAction"
+                    prefHeight="30.0" style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-background-radius: 3;"
+                    text="Update">
                <font>
                   <Font size="12.0" />
                </font>
             </Button>
-            <Button fx:id="btnDelete" minWidth="80.0" mnemonicParsing="false" onAction="#btnDeleteOnAction" prefHeight="30.0" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 3;" text="Delete">
+            <Button fx:id="btnDelete" minWidth="80.0" mnemonicParsing="false" onAction="#btnDeleteOnAction"
+                    prefHeight="30.0" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 3;"
+                    text="Delete">
                <font>
                   <Font size="12.0" />
                </font>
             </Button>
-            <Button fx:id="btnClear" minWidth="80.0" mnemonicParsing="false" onAction="#btnClearOnAction" prefHeight="30.0" style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-background-radius: 3;" text="Clear">
+            <Button fx:id="btnClear" minWidth="80.0" mnemonicParsing="false" onAction="#btnClearOnAction"
+                    prefHeight="30.0" style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-background-radius: 3;"
+                    text="Clear">
                <font>
                   <Font size="12.0" />
                </font>
@@ -65,14 +86,18 @@
          </buttons>
       </ButtonBar>
 
-      <TableView fx:id="table" layoutX="55.0" layoutY="381.0" onMouseClicked="#tableColumnOnClicked" prefHeight="300.0" prefWidth="800.0" style="-fx-background-radius: 5; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);">
+      <TableView fx:id="table" layoutX="55.0" layoutY="381.0" onMouseClicked="#tableColumnOnClicked"
+                 prefHeight="300.0" prefWidth="800.0"
+                 style="-fx-background-radius: 5; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);">
          <columns>
-            <TableColumn fx:id="colInventory_id" prefWidth="150.0" style="-fx-font-size: 12;" text="Inventory ID" />
-            <TableColumn fx:id="colProduct_id" prefWidth="200.0" style="-fx-font-size: 12;" text="Product ID" />
-            <TableColumn fx:id="colCurrentStockBags" prefWidth="200.0" style="-fx-font-size: 12;" text="Current Stock (Bags)" />
-            <TableColumn fx:id="colLastupdated" prefWidth="250.0" style="-fx-font-size: 12;" text="Last Updated" />
+            <TableColumn fx:id="colInventory_id" prefWidth="150.0" style="-fx-font-size: 12; -fx-alignment: CENTER;" text="Inventory ID" />
+            <TableColumn fx:id="colProduct_id" prefWidth="200.0" style="-fx-font-size: 12; -fx-alignment: CENTER;" text="Product ID" />
+            <TableColumn fx:id="colCurrentStockBags" prefWidth="200.0" style="-fx-font-size: 12; -fx-alignment: CENTER;" text="Current Stock (Bags)" />
+            <TableColumn fx:id="colLastupdated" prefWidth="250.0" style="-fx-font-size: 12; -fx-alignment: CENTER;" text="Last Updated" />
          </columns>
       </TableView>
+
+      <Label fx:id="lblStockStatus" layoutX="55.0" layoutY="350.0" style="-fx-font-weight: bold;" visible="false" />
    </children>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

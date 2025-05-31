@@ -45,21 +45,28 @@ public class FarmersModel {
                 farmersdto.getAddress(),
                 farmersdto.getContactNumber(),
                 farmersdto.getFarmerId()
-                );
+        );
     }
 
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtill.execute("select farmer_id from farmers order by farmer_id desc limit 1");
-        char tableChar = 'F'; // Use any character Ex:- customer table for C, item table for I
+        char tableChar = 'F';
         if (resultSet.next()) {
-            String lastId = resultSet.getString(1); // "C004"
-            String lastIdNUmberString = lastId.substring(1); // "004"
-            int lastIdNumber = Integer.parseInt(lastIdNUmberString); // 4
-            int nextIdNumber = lastIdNumber + 1; // 5
-            String nextIdString = String.format(tableChar + "%03d", nextIdNumber); // "C005"
+            String lastId = resultSet.getString(1);
+            String lastIdNUmberString = lastId.substring(1);
+            int lastIdNumber = Integer.parseInt(lastIdNUmberString);
+            int nextIdNumber = lastIdNumber + 1;
+            String nextIdString = String.format(tableChar + "%03d", nextIdNumber);
             return nextIdString;
         }
         return tableChar + "001";
     }
-    }
 
+    public static int getFarmerCount() throws SQLException {
+        ResultSet rs = CrudUtill.execute("SELECT COUNT(*) FROM farmers");
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        return 0;
+    }
+}

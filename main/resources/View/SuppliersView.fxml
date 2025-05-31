@@ -8,17 +8,23 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: #f5f9fc;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse74.mytest2.responsive.Controller.SuppliersController">
    <children>
-      <Label layoutX="20.0" layoutY="20.0" prefHeight="28.0" prefWidth="216.0" text=" Supplier Management">
-         <font>
-            <Font name="System Bold" size="22.0" />
-         </font>
-      </Label>
+      <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="20.0" spacing="20.0">
+         <children>
+            <Label prefHeight="28.0" prefWidth="216.0" text=" Supplier Management">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblSupplierCount" style="-fx-text-fill: #2980b9; -fx-font-weight: bold;" text="Suppliers: 0" />
+         </children>
+      </HBox>
 
       <VBox layoutX="50.0" layoutY="60.0" prefHeight="250.0" prefWidth="800.0" spacing="8.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);">
          <children>
@@ -42,9 +48,16 @@
          </padding>
       </VBox>
 
-      <ButtonBar layoutX="51.0" layoutY="383.0" prefHeight="40.0" prefWidth="800.0" style="-fx-background-color: transparent; -fx-padding: 10 0 10 0;">
+      <HBox layoutX="50.0" layoutY="320.0" prefHeight="40.0" prefWidth="548.0" spacing="10.0" />
+
+      <ButtonBar layoutX="50.0" layoutY="387.0" prefHeight="40.0" prefWidth="800.0" style="-fx-background-color: transparent; -fx-padding: 10 0 10 0;">
          <buttons>
-            <Button fx:id="btnSave" minWidth="80.0" mnemonicParsing="false" onAction="#btnSaveOnAction" prefHeight="30.0" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-background-radius: 3;" text="Save">
+            <Button fx:id="btnDelete" minWidth="80.0" mnemonicParsing="false" onAction="#btnDeleteOnAction" prefHeight="30.0" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 3;" text="Delete">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnClear" minWidth="80.0" mnemonicParsing="false" onAction="#btnClearOnAction" prefHeight="30.0" style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-background-radius: 3;" text="Clear">
                <font>
                   <Font size="12.0" />
                </font>
@@ -54,12 +67,7 @@
                   <Font size="12.0" />
                </font>
             </Button>
-            <Button fx:id="btnDelete" minWidth="80.0" mnemonicParsing="false" onAction="#btnDeleteOnAction" prefHeight="30.0" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 3;" text="Delete">
-               <font>
-                  <Font size="12.0" />
-               </font>
-            </Button>
-            <Button fx:id="btnClear" minWidth="80.0" mnemonicParsing="false" onAction="#btnClearOnAction" prefHeight="30.0" style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-background-radius: 3;" text="Clear">
+            <Button fx:id="btnSave" minWidth="80.0" mnemonicParsing="false" onAction="#btnSaveOnAction" prefHeight="30.0" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-background-radius: 3;" text="Save">
                <font>
                   <Font size="12.0" />
                </font>
@@ -76,6 +84,8 @@
             <TableColumn fx:id="colemail" prefWidth="150.0" style="-fx-font-size: 12;" text="Email" />
          </columns>
       </TableView>
+      <TextField fx:id="txtSearch" layoutX="347.0" layoutY="23.0" onKeyReleased="#searchSupplier" prefHeight="27.0" prefWidth="410.0" promptText="Search suppliers..." style="-fx-background-radius: 3; -fx-border-color: #bdc3c7; -fx-border-radius: 3;" />
+      <Button layoutX="771.0" layoutY="23.0" mnemonicParsing="false" onAction="#clearSearch" style="-fx-background-color: #bdc3c7; -fx-background-radius: 3;" text="Clear" />
    </children>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

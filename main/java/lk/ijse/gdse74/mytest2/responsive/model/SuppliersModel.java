@@ -23,6 +23,7 @@ public class SuppliersModel {
         }
         return suppliers;
     }
+
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtill.execute("select supplier_id from suppliers order by supplier_id desc limit 1");
         char tableChar = 'S';
@@ -61,5 +62,13 @@ public class SuppliersModel {
                 suppliersdto.getEmail(),
                 suppliersdto.getSupplierId()
         );
+    }
+
+    public static int getSupplierCount() throws SQLException {
+        ResultSet rs = CrudUtill.execute("SELECT COUNT(*) FROM suppliers");
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        return 0;
     }
 }

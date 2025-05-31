@@ -8,17 +8,23 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: #f5f9fc;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse74.mytest2.responsive.Controller.CustomersController">
    <children>
-      <Label layoutX="20.0" layoutY="20.0" style="-fx-text-fill: #2c3e50;" text="Customer Management">
-         <font>
-            <Font name="System Bold" size="22.0" />
-         </font>
-      </Label>
+      <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="20.0" spacing="20.0">
+         <children>
+            <Label style="-fx-text-fill: #2c3e50;" text="Customer Management">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblCustomerCount" style="-fx-text-fill: #2980b9; -fx-font-weight: bold;" text="Customers: 0" />
+         </children>
+      </HBox>
 
       <VBox layoutX="50.0" layoutY="60.0" prefHeight="250.0" prefWidth="800.0" spacing="8.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);">
          <children>
@@ -42,7 +48,14 @@
          </padding>
       </VBox>
 
-      <ButtonBar layoutX="51.0" layoutY="383.0" prefHeight="40.0" prefWidth="800.0" style="-fx-background-color: transparent; -fx-padding: 10 0 10 0;">
+      <HBox layoutX="399.0" layoutY="20.0" prefHeight="40.0" prefWidth="437.0" spacing="10.0">
+         <children>
+            <TextField fx:id="txtSearch" onKeyReleased="#searchCustomer" prefHeight="26.0" prefWidth="382.0" promptText="Search customers..." style="-fx-background-radius: 3; -fx-border-color: #bdc3c7; -fx-border-radius: 3;" HBox.hgrow="ALWAYS" />
+            <Button mnemonicParsing="false" onAction="#clearSearch" prefHeight="25.0" prefWidth="48.0" style="-fx-background-color: #bdc3c7; -fx-background-radius: 3;" text="Clear" />
+         </children>
+      </HBox>
+
+      <ButtonBar layoutX="50.0" layoutY="378.0" prefHeight="40.0" prefWidth="800.0" style="-fx-background-color: transparent; -fx-padding: 10 0 10 0;">
          <buttons>
             <Button fx:id="btnSave" minWidth="80.0" mnemonicParsing="false" onAction="#btnSaveOnAction" prefHeight="30.0" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-background-radius: 3;" text="Save">
                <font>

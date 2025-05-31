@@ -1,0 +1,76 @@
+/* Main background */
+.root {
+    -fx-background-color: #f5f9fc;
+}
+
+/* Table styling */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 5;
+}
+
+/* Table header */
+.table-view .column-header-background {
+    -fx-background-color: #2980b9;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* Table rows */
+.table-row-cell {
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+}
+
+/* Critical stock rows */
+.table-row-cell:critical {
+    -fx-background-color: #ffdddd;
+    -fx-font-weight: bold;
+}
+
+/* Low stock rows */
+.table-row-cell:low {
+    -fx-background-color: #fff3cd;
+}
+
+/* Hover effects */
+.table-row-cell:hover {
+    -fx-background-color: #f0f0f0;
+}
+
+/* Selected row */
+.table-row-cell:selected {
+    -fx-background-color: #d4e6f1;
+    -fx-font-weight: bold;
+}
+
+/* Text fields */
+.text-field {
+    -fx-background-radius: 3;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 3;
+}
+
+/* Combo box */
+.combo-box {
+    -fx-background-radius: 3;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 3;
+}
+
+/* Buttons */
+.button {
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+
+/* Status label */
+#lblStockStatus {
+    -fx-font-size: 14px;
+}

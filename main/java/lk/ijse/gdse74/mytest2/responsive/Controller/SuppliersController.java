@@ -3,6 +3,8 @@ package lk.ijse.gdse74.mytest2.responsive.Controller;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -35,10 +37,14 @@ public class SuppliersController implements Initializable {
     @FXML private TextField txtName;
     @FXML private TextField txtaddress;
     @FXML private TextField txtemail;
+    @FXML private TextField txtSearch;
+    @FXML private Label lblSupplierCount;
 
     private final String namePattern = "^[A-Za-z ]+$";
     private final String emailPattern = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
     private final String phonePattern = "^0\\d{9}$";
+
+    private ObservableList<Suppliersdto> supplierMasterData = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -46,6 +52,7 @@ public class SuppliersController implements Initializable {
             loadTable();
             disableButtons(true);
             loadNextId();
+            setupSearchFilter();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -60,11 +67,48 @@ public class SuppliersController implements Initializable {
 
         try {
             ArrayList<Suppliersdto> suppliersdtos = SuppliersModel.viewAllSuppliers();
-            ObservableList<Suppliersdto> suppliersdtoObservableList = FXCollections.observableArrayList(suppliersdtos);
-            tSuppliersTable.setItems(suppliersdtoObservableList);
+            supplierMasterData = FXCollections.observableArrayList(suppliersdtos);
+            tSuppliersTable.setItems(supplierMasterData);
+            updateSupplierCount();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void setupSearchFilter() {
+        FilteredList<Suppliersdto> filteredData = new FilteredList<>(supplierMasterData, p -> true);
+
+        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(supplier -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if (supplier.getSupplierId().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (supplier.getName().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (supplier.getContactNumber().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (supplier.getAddress().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (supplier.getEmail().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                return false;
+            });
+
+            SortedList<Suppliersdto> sortedData = new SortedList<>(filteredData);
+            sortedData.comparatorProperty().bind(tSuppliersTable.comparatorProperty());
+            tSuppliersTable.setItems(sortedData);
+            updateSupplierCount();
+        });
+    }
+
+    private void updateSupplierCount() {
+        lblSupplierCount.setText("Suppliers: " + tSuppliersTable.getItems().size());
     }
 
     private void loadNextId() throws SQLException {
@@ -240,5 +284,17 @@ public class SuppliersController implements Initializable {
         String email = txtemail.getText();
         boolean isValidEmail = email.matches(emailPattern);
         txtemail.setStyle(isValidEmail ? "-fx-border-color: blue" : "-fx-border-color: red");
+    }
+
+    @FXML
+    void searchSupplier(KeyEvent event) {
+        // Handled by the search filter setup
+    }
+
+    @FXML
+    void clearSearch(ActionEvent event) {
+        txtSearch.clear();
+        tSuppliersTable.setItems(supplierMasterData);
+        updateSupplierCount();
     }
 }

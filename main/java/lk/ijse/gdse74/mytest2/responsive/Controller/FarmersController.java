@@ -3,20 +3,17 @@ package lk.ijse.gdse74.mytest2.responsive.Controller;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import lk.ijse.gdse74.mytest2.responsive.dto.Farmersdto;
 import lk.ijse.gdse74.mytest2.responsive.model.FarmersModel;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ButtonType;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -39,12 +36,15 @@ public class FarmersController implements Initializable {
     @FXML private TextField txtId;
     @FXML private TextField txtName;
     @FXML private TextField txtaddress;
+    @FXML private TextField txtSearch;
+    @FXML private Label lblFarmerCount;
 
     private final String namePattern = "^[A-Za-z ]+$";
     private final String nicPattern = "^[0-9]{9}[vVxX]||[0-9]{12}$";
     private final String emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.lk$";
     private final String phonePattern = "^(?:0|\\+94|0094)?(?:07\\d{8})$";
 
+    private ObservableList<Farmersdto> farmerMasterData = FXCollections.observableArrayList();
     FarmersModel farmersModel = new FarmersModel();
 
     @Override
@@ -53,9 +53,44 @@ public class FarmersController implements Initializable {
             loadTable();
             loadNextId();
             disableButtons(true);
+            setupSearchFilter();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void setupSearchFilter() {
+        FilteredList<Farmersdto> filteredData = new FilteredList<>(farmerMasterData, p -> true);
+
+        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(farmer -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if (farmer.getFarmerId().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (farmer.getName().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (farmer.getContactNumber().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (farmer.getAddress().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                return false;
+            });
+
+            SortedList<Farmersdto> sortedData = new SortedList<>(filteredData);
+            sortedData.comparatorProperty().bind(tfarmersTable.comparatorProperty());
+            tfarmersTable.setItems(sortedData);
+            updateFarmerCount();
+        });
+    }
+
+    private void updateFarmerCount() {
+        lblFarmerCount.setText("Farmers: " + tfarmersTable.getItems().size());
     }
 
     private void disableButtons(boolean disable) {
@@ -73,8 +108,9 @@ public class FarmersController implements Initializable {
         try {
             ArrayList<Farmersdto> farmersdtos = farmersModel.viewAllFarmers();
             if(farmersdtos != null) {
-                ObservableList<Farmersdto> observableList = FXCollections.observableList(farmersdtos);
-                tfarmersTable.setItems(observableList);
+                farmerMasterData = FXCollections.observableArrayList(farmersdtos);
+                tfarmersTable.setItems(farmerMasterData);
+                updateFarmerCount();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -214,5 +250,17 @@ public class FarmersController implements Initializable {
         String contactNumber = txtContact_number.getText();
         boolean isValidContact = contactNumber.matches(phonePattern);
         txtContact_number.setStyle(isValidContact ? "-fx-border-color: blue" : "-fx-border-color: red");
+    }
+
+    @FXML
+    void searchFarmer(KeyEvent event) {
+        // Handled by the search filter setup
+    }
+
+    @FXML
+    void clearSearch(ActionEvent event) {
+        txtSearch.clear();
+        tfarmersTable.setItems(farmerMasterData);
+        updateFarmerCount();
     }
 }

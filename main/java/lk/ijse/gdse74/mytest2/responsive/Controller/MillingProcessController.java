@@ -1,6 +1,5 @@
 package lk.ijse.gdse74.mytest2.responsive.Controller;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,246 +14,330 @@ import lk.ijse.gdse74.mytest2.responsive.model.MillingProcessModel;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Optional; // Import Optional for confirmation dialogs
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MillingProcessController implements Initializable {
 
-    @FXML
-    private Button btnClear;
+    @FXML private Button btnClear;
+    @FXML private Button btnDelete;
+    @FXML private Button btnSave;
+    @FXML private Button btnUpdate;
+    @FXML private Button btnOverride;
+    @FXML private TableColumn<MillingProcessdto, Double> colBran_rice;
+    @FXML private TableColumn<MillingProcessdto, Double> colBroken_rice;
+    @FXML private TableColumn<MillingProcessdto, Time> colEnd_time;
+    @FXML private TableColumn<MillingProcessdto, Double> colHusk;
+    @FXML private TableColumn<MillingProcessdto, String> colMilling_id;
+    @FXML private TableColumn<MillingProcessdto, String> colPaddy_id;
+    @FXML private TableColumn<MillingProcessdto, Time> colStart_time;
+    @FXML private TableColumn<MillingProcessdto, Double> colmilled_Quantity;
+    @FXML private TableView<MillingProcessdto> table;
+    @FXML private TextField txtBran;
+    @FXML private TextField txtBrokenRice;
+    @FXML private TextField txtHusk;
+    @FXML private TextField txtMilledQuantity;
+    @FXML private TextField txtMilling_id;
+    @FXML private ComboBox<String> cmbPaddyId;
+    @FXML private Spinner<Integer> endHourSpinner;
+    @FXML private Spinner<Integer> endMinuteSpinner;
+    @FXML private Spinner<Integer> endSecondSpinner;
+    @FXML private Label lblDuration;
+    @FXML private Label lblStartTime;
+
+    private static final double BROKEN_RICE_RATIO = 0.05;
+    private static final double HUSK_RATIO = 0.20;
+    private static final double BRAN_RATIO = 0.10;
+    private boolean overrideEnabled = false;
+    private Time currentStartTime;
+    private ObservableList<String> paddyIdList = FXCollections.observableArrayList();
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        setCurrentTimeAsStartTime();
+        initTimeSpinners();
+        setupAutomaticCalculations();
+        disableButtons(true);
+        loadPaddyIds();
+
+        try {
+            loadNextId();
+            loadTable();
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Database Error: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            showAlert(Alert.AlertType.ERROR, "Class Not Found: " + e.getMessage());
+        }
+    }
+
+    private void loadPaddyIds() {
+        try {
+            ArrayList<String> ids = MillingProcessModel.getAllPaddyIds();
+            paddyIdList.clear();
+            paddyIdList.addAll(ids);
+            cmbPaddyId.setItems(paddyIdList);
+        } catch (SQLException | ClassNotFoundException e) {
+            showAlert(Alert.AlertType.ERROR, "Failed to load paddy IDs: " + e.getMessage());
+        }
+    }
+
+    private void setCurrentTimeAsStartTime() {
+        LocalTime now = LocalTime.now();
+        currentStartTime = Time.valueOf(now);
+        lblStartTime.setText(String.format("%02d:%02d:%02d",
+                now.getHour(), now.getMinute(), now.getSecond()));
+    }
+
+    private void initTimeSpinners() {
+        LocalTime now = LocalTime.now();
+        endHourSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, now.getHour()));
+        endMinuteSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, now.getMinute()));
+        endSecondSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, now.getSecond()));
+
+        endHourSpinner.valueProperty().addListener((obs, oldVal, newVal) -> calculateDuration());
+        endMinuteSpinner.valueProperty().addListener((obs, oldVal, newVal) -> calculateDuration());
+        endSecondSpinner.valueProperty().addListener((obs, oldVal, newVal) -> calculateDuration());
+    }
+
+    private void setupAutomaticCalculations() {
+        txtMilledQuantity.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.isEmpty() && !overrideEnabled) {
+                try {
+                    calculateByproducts(Double.parseDouble(newVal));
+                } catch (NumberFormatException e) {
+                    clearByproductFields();
+                }
+            }
+        });
+
+        txtBrokenRice.setEditable(false);
+        txtHusk.setEditable(false);
+        txtBran.setEditable(false);
+    }
+
+    private void calculateByproducts(double milledQuantity) {
+        double brokenRice = milledQuantity * BROKEN_RICE_RATIO;
+        double husk = milledQuantity * HUSK_RATIO;
+        double bran = milledQuantity * BRAN_RATIO;
+
+        txtBrokenRice.setText(String.format("%.2f", brokenRice));
+        txtHusk.setText(String.format("%.2f", husk));
+        txtBran.setText(String.format("%.2f", bran));
+    }
+
+    private void calculateDuration() {
+        try {
+            Time endTime = getEndTimeFromSpinners();
+
+            if (currentStartTime != null && endTime != null) {
+                if (endTime.before(currentStartTime)) {
+                    showInvalidDuration("Invalid: End before Start");
+                } else {
+                    showValidDuration(currentStartTime, endTime);
+                }
+            }
+        } catch (Exception e) {
+            showInvalidDuration("Invalid Time");
+        }
+    }
+
+    private Time getEndTimeFromSpinners() {
+        try {
+            int hour = endHourSpinner.getValue();
+            int minute = endMinuteSpinner.getValue();
+            int second = endSecondSpinner.getValue();
+            return new Time(hour, minute, second);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     @FXML
-    private Button btnDelete;
+    void btnSaveOnAction(ActionEvent event) {
+        if (!validateInputs()) return;
+
+        try {
+            MillingProcessdto dto = createMillingProcessDto();
+            boolean isSaved = MillingProcessModel.saveMillingProcess(dto);
+
+            if (isSaved) {
+                showAlert(Alert.AlertType.INFORMATION, "Process Saved");
+                clearFields();
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Save Failed");
+            }
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Error saving: " + e.getMessage());
+        }
+    }
 
     @FXML
-    private Button btnSave;
+    void btnUpdateOnAction(ActionEvent event) {
+        if (!validateInputs()) return;
 
-    @FXML
-    private Button btnUpdate;
+        try {
+            MillingProcessdto dto = createMillingProcessDto();
+            boolean isUpdated = MillingProcessModel.updateMillingProcess(dto);
 
-    @FXML
-    private TableColumn<MillingProcessdto,Double> colBran_rice;
-
-    @FXML
-    private TableColumn<MillingProcessdto,Double> colBroken_rice;
-
-    @FXML
-    private TableColumn<MillingProcessdto, Time> colEnd_time;
-
-    @FXML
-    private TableColumn<MillingProcessdto,Double> colHusk;
-
-    @FXML
-    private TableColumn<MillingProcessdto,String> colMilling_id;
-
-    @FXML
-    private TableColumn<MillingProcessdto,String> colPaddy_id;
-
-    @FXML
-    private TableColumn<MillingProcessdto,Time> colStart_time;
-
-    @FXML
-    private TableColumn<MillingProcessdto,Double> colmilled_Quantity;
-
-    @FXML
-    private TableView<MillingProcessdto> table;
-
-    @FXML
-    private TextField txtBran;
-
-    @FXML
-    private TextField txtBrokenRice;
-
-    @FXML
-    private TextField txtEnd_time;
-
-    @FXML
-    private TextField txtHusk;
-
-    @FXML
-    private TextField txtMilledQuantity;
-
-    @FXML
-    private TextField txtMilling_id;
-
-    @FXML
-    private TextField txtPaddyid;
-
-    @FXML
-    private TextField txtStart_time;
-
-    private final String timePattern = "^([01]\\d|2[0-3]):([0-5]\\d):([0-5]\\d)$"; // This pattern is defined but not used for validation in the provided code.
-
-    @FXML
-    void btnClearOnAction(ActionEvent event) throws SQLException {
-        clearFields();
-        // After clearing, disable update and delete buttons
-        btnUpdate.setDisable(true);
-        btnDelete.setDisable(true);
+            if (isUpdated) {
+                showAlert(Alert.AlertType.INFORMATION, "Process Updated");
+                clearFields();
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Update Failed");
+            }
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Error updating: " + e.getMessage());
+        }
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        // Confirmation dialog for delete
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Dialog");
+        alert.setTitle("Confirmation");
         alert.setHeaderText("Delete Milling Process");
-        alert.setContentText("Are you sure you want to delete this milling process? This action cannot be undone.");
+        alert.setContentText("Are you sure you want to delete this process?");
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            String id = txtMilling_id.getText();
             try {
-                boolean isDelete = MillingProcessModel.deleteMillingProcess(new MillingProcessdto(id));
-                if (isDelete) {
-                    new Alert(Alert.AlertType.INFORMATION, "Milling Process Deleted Successfully").show();
+                boolean isDeleted = MillingProcessModel.deleteMillingProcess(new MillingProcessdto(txtMilling_id.getText()));
+                if (isDeleted) {
+                    showAlert(Alert.AlertType.INFORMATION, "Process Deleted");
                     clearFields();
                 } else {
-                    new Alert(Alert.AlertType.ERROR, "Milling Process Not Deleted").show();
+                    showAlert(Alert.AlertType.ERROR, "Deletion Failed");
                 }
-
-            } catch (Exception e){
-                e.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "Failed to delete milling process data").show();
+            } catch (Exception e) {
+                showAlert(Alert.AlertType.ERROR, "Error deleting: " + e.getMessage());
             }
         }
     }
 
     @FXML
-    public  void btnSaveOnAction(ActionEvent event) {
-
-        String millingId = txtMilling_id.getText();
-        String paddy = txtPaddyid.getText();
-        // Basic validation for time format before parsing
-        if (!txtStart_time.getText().matches(timePattern) || !txtEnd_time.getText().matches(timePattern)) {
-            new Alert(Alert.AlertType.ERROR, "Invalid Time Format. Please use HH:MM:SS.").show();
-            return;
-        }
-
-        Time starTime = Time.valueOf(txtStart_time.getText());
-        Time endTime = Time.valueOf(txtEnd_time.getText());
-
-        // Basic validation for numeric fields
-        double milledQuantity, broken, husk, bran;
+    void btnClearOnAction(ActionEvent event) {
         try {
-            milledQuantity = Double.parseDouble(txtMilledQuantity.getText());
-            broken = Double.parseDouble(txtBrokenRice.getText());
-            husk = Double.parseDouble(txtHusk.getText());
-            bran = Double.parseDouble(txtBran.getText());
-        } catch (NumberFormatException e) {
-            new Alert(Alert.AlertType.ERROR, "Invalid numeric input. Please enter valid numbers for quantities.").show();
-            return;
-        }
-
-
-        MillingProcessdto millingProcessdto = new MillingProcessdto(millingId,paddy,starTime,endTime,milledQuantity,broken,husk,bran);
-        try {
-            // No need to instantiate MillingProcessModel here, as saveMillingProcess is static
-            boolean isSave = MillingProcessModel.saveMillingProcess(millingProcessdto);
-            if(isSave){
-                new Alert(Alert.AlertType.INFORMATION,"Milling Process Saved Successfully").show();
-                clearFields();
-            }else {
-                new Alert(Alert.AlertType.ERROR,"Milling Process Not Saved").show();
-            }
-
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR,"Something went wrong while saving milling process").show();
+            clearFields();
+        } catch (SQLException | ClassNotFoundException e) {
+            showAlert(Alert.AlertType.ERROR, "Error clearing fields: " + e.getMessage());
         }
     }
 
-    private void clearFields() throws SQLException {
-        txtMilling_id.clear();
-        txtPaddyid.clear();
-        txtStart_time.clear();
-        txtEnd_time.clear();
+    @FXML
+    void toggleOverride(ActionEvent event) {
+        overrideEnabled = !overrideEnabled;
+        txtBrokenRice.setEditable(overrideEnabled);
+        txtHusk.setEditable(overrideEnabled);
+        txtBran.setEditable(overrideEnabled);
+
+        if (overrideEnabled) {
+            btnOverride.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
+            btnOverride.setText("Lock");
+        } else {
+            btnOverride.setStyle("-fx-background-color: #9b59b6; -fx-text-fill: white;");
+            btnOverride.setText("Override");
+            recalculateByproducts();
+        }
+    }
+
+    public void tableColumnOnClicked(MouseEvent mouseEvent) {
+        MillingProcessdto process = table.getSelectionModel().getSelectedItem();
+        if (process != null) {
+            txtMilling_id.setText(process.getMillingId());
+            cmbPaddyId.setValue(process.getPaddyId());
+            txtMilledQuantity.setText(String.valueOf(process.getMilledQuantity()));
+            txtBrokenRice.setText(String.valueOf(process.getBrokenRice()));
+            txtHusk.setText(String.valueOf(process.getHusk()));
+            txtBran.setText(String.valueOf(process.getBran()));
+
+            currentStartTime = process.getStartTime();
+            lblStartTime.setText(String.format("%02d:%02d:%02d",
+                    currentStartTime.getHours(),
+                    currentStartTime.getMinutes(),
+                    currentStartTime.getSeconds()));
+
+            endHourSpinner.getValueFactory().setValue(process.getEndTime().getHours());
+            endMinuteSpinner.getValueFactory().setValue(process.getEndTime().getMinutes());
+            endSecondSpinner.getValueFactory().setValue(process.getEndTime().getSeconds());
+
+            disableButtons(false);
+            btnSave.setDisable(true);
+            overrideEnabled = true;
+            toggleOverride(null);
+        }
+    }
+
+    private MillingProcessdto createMillingProcessDto() {
+        return new MillingProcessdto(
+                txtMilling_id.getText(),
+                cmbPaddyId.getValue(),
+                currentStartTime,
+                getEndTimeFromSpinners(),
+                Double.parseDouble(txtMilledQuantity.getText()),
+                Double.parseDouble(txtBrokenRice.getText()),
+                Double.parseDouble(txtHusk.getText()),
+                Double.parseDouble(txtBran.getText())
+        );
+    }
+
+    private boolean validateInputs() {
+        if (cmbPaddyId.getValue() == null || cmbPaddyId.getValue().isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Please select a Paddy ID");
+            return false;
+        }
+
+        try {
+            Time endTime = getEndTimeFromSpinners();
+            if (endTime == null || endTime.before(currentStartTime)) {
+                showAlert(Alert.AlertType.ERROR, "Invalid time values");
+                return false;
+            }
+
+            double milledQty = Double.parseDouble(txtMilledQuantity.getText());
+            if (milledQty <= 0) {
+                showAlert(Alert.AlertType.ERROR, "Milled quantity must be positive");
+                return false;
+            }
+
+            return true;
+        } catch (NumberFormatException e) {
+            showAlert(Alert.AlertType.ERROR, "Invalid numeric values");
+            return false;
+        }
+    }
+
+    private void clearFields() throws SQLException, ClassNotFoundException {
+        cmbPaddyId.setValue(null);
         txtMilledQuantity.clear();
+        clearByproductFields();
+        setCurrentTimeAsStartTime();
+
+        LocalTime now = LocalTime.now();
+        endHourSpinner.getValueFactory().setValue(now.getHour());
+        endMinuteSpinner.getValueFactory().setValue(now.getMinute());
+        endSecondSpinner.getValueFactory().setValue(now.getSecond());
+
+        lblDuration.setText("Duration: 00:00:00");
+        lblDuration.setStyle("-fx-text-fill: black;");
+
+        overrideEnabled = false;
+        btnOverride.setStyle("-fx-background-color: #9b59b6; -fx-text-fill: white;");
+        btnOverride.setText("Override");
+
+        loadNextId();
+        loadTable();
+        disableButtons(true);
+    }
+
+    private void clearByproductFields() {
         txtBrokenRice.clear();
         txtHusk.clear();
         txtBran.clear();
-        loadNextId();
-        Platform.runLater(() -> {
-            txtMilling_id.setText(txtMilling_id.getText()); // Forces refresh
-            System.out.println("UI refreshed with ID: " + txtMilling_id.getText());
-        });
-        loadTable(); // Refresh table data after clearing fields
-        // Disable update and delete buttons after clearing fields
-        btnUpdate.setDisable(true);
-        btnDelete.setDisable(true);
     }
 
-    @FXML
-    public void btnUpdateOnAction(ActionEvent event) {
-        // Confirmation dialog for update
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText("Update Milling Process");
-        alert.setContentText("Are you sure you want to update this milling process?");
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            String millingId = txtMilling_id.getText();
-            String paddy = txtPaddyid.getText();
-
-            // Basic validation for time format before parsing
-            if (!txtStart_time.getText().matches(timePattern) || !txtEnd_time.getText().matches(timePattern)) {
-                new Alert(Alert.AlertType.ERROR, "Invalid Time Format. Please use HH:MM:SS.").show();
-                return;
-            }
-
-            Time starTime = Time.valueOf(txtStart_time.getText());
-            Time endTime = Time.valueOf(txtEnd_time.getText());
-
-            // Basic validation for numeric fields
-            double milledQuantity, broken, husk, bran;
-            try {
-                milledQuantity = Double.parseDouble(txtMilledQuantity.getText());
-                broken = Double.parseDouble(txtBrokenRice.getText());
-                husk = Double.parseDouble(txtHusk.getText());
-                bran = Double.parseDouble(txtBran.getText());
-            } catch (NumberFormatException e) {
-                new Alert(Alert.AlertType.ERROR, "Invalid numeric input. Please enter valid numbers for quantities.").show();
-                return;
-            }
-
-            MillingProcessdto millingProcessdto = new MillingProcessdto(millingId,paddy,starTime,endTime,milledQuantity,broken,husk,bran);
-            try {
-                // No need to instantiate MillingProcessModel here, as updateMillingProcess is static
-                boolean isUpdate = MillingProcessModel.updateMillingProcess(millingProcessdto);
-                if(isUpdate){
-                    new Alert(Alert.AlertType.INFORMATION,"Milling Process Updated Successfully").show();
-                    clearFields();
-                }else {
-                    new Alert(Alert.AlertType.ERROR,"Milling Process Not Updated").show();
-                }
-
-            }catch (Exception e){
-                e.printStackTrace();
-                new Alert(Alert.AlertType.ERROR,"Something went wrong while updating milling process").show();
-            }
-        }
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Disable update and delete buttons initially
-        btnUpdate.setDisable(true);
-        btnDelete.setDisable(true);
-
-        try {
-            loadNextId();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error loading next ID on initialization", e);
-        }
-        loadTable();
-    }
-
-    private void loadNextId() throws SQLException {
-        String id = new MillingProcessModel().getNextId();
-        txtMilling_id.setText(id);
-        txtMilling_id.setEditable(false); // Make ID field non-editable
+    private void loadNextId() throws SQLException, ClassNotFoundException {
+        txtMilling_id.setText(new MillingProcessModel().getNextId());
     }
 
     private void loadTable() {
@@ -268,37 +351,51 @@ public class MillingProcessController implements Initializable {
         colBran_rice.setCellValueFactory(new PropertyValueFactory<>("bran"));
 
         try {
-            // No need to instantiate MillingProcessModel here, as viewAllMillingProcess is static
-            ArrayList<MillingProcessdto> millingProcessdtos = MillingProcessModel.viewAllMillingProcess();
-            if(millingProcessdtos != null) {
-                ObservableList<MillingProcessdto> observableList = FXCollections.observableList(millingProcessdtos);
-                table.setItems(observableList);
-            } else {
-                new Alert(Alert.AlertType.ERROR, "No milling process data was retrieved.").show();
-            }
-
-        } catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Failed to load milling process data").show();
+            ArrayList<MillingProcessdto> processes = MillingProcessModel.viewAllMillingProcess();
+            table.setItems(FXCollections.observableArrayList(processes));
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Error loading data: " + e.getMessage());
         }
     }
 
-    public void tableColumnOnClicked(MouseEvent mouseEvent) {
-        MillingProcessdto millingProcessdto = table.getSelectionModel().getSelectedItem();
-        if (millingProcessdto != null) {
-            txtMilling_id.setText(millingProcessdto.getMillingId());
-            txtPaddyid.setText(millingProcessdto.getPaddyId());
-            txtStart_time.setText(String.valueOf(millingProcessdto.getStartTime()));
-            txtEnd_time.setText(String.valueOf(millingProcessdto.getEndTime()));
-            txtMilledQuantity.setText(String.valueOf(millingProcessdto.getMilledQuantity()));
-            txtBrokenRice.setText(String.valueOf(millingProcessdto.getBrokenRice()));
-            txtHusk.setText(String.valueOf(millingProcessdto.getHusk()));
-            txtBran.setText(String.valueOf(millingProcessdto.getBran()));
+    private void disableButtons(boolean disable) {
+        btnUpdate.setDisable(disable);
+        btnDelete.setDisable(disable);
+    }
 
-            // Enable update and delete buttons when a milling process is selected
-            btnUpdate.setDisable(false);
-            btnDelete.setDisable(false);
-            btnSave.setDisable(true);
+    private void showInvalidDuration(String message) {
+        lblDuration.setText(message);
+        lblDuration.setStyle("-fx-text-fill: red;");
+        disableSaveButtons(true);
+    }
+
+    private void showValidDuration(Time startTime, Time endTime) {
+        long diff = endTime.getTime() - startTime.getTime();
+        long diffHours = diff / (60 * 60 * 1000);
+        long diffMinutes = (diff / (60 * 1000)) % 60;
+        long diffSeconds = (diff / 1000) % 60;
+
+        lblDuration.setText(String.format("Duration: %02d:%02d:%02d", diffHours, diffMinutes, diffSeconds));
+        lblDuration.setStyle("-fx-text-fill: green;");
+        disableSaveButtons(false);
+    }
+
+    private void disableSaveButtons(boolean disable) {
+        btnSave.setDisable(disable);
+        btnUpdate.setDisable(disable);
+    }
+
+    private void recalculateByproducts() {
+        if (!txtMilledQuantity.getText().isEmpty()) {
+            try {
+                calculateByproducts(Double.parseDouble(txtMilledQuantity.getText()));
+            } catch (NumberFormatException e) {
+                clearByproductFields();
+            }
         }
+    }
+
+    private void showAlert(Alert.AlertType type, String message) {
+        new Alert(type, message).show();
     }
 }
