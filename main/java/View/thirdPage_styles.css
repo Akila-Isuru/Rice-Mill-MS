@@ -1,0 +1,133 @@
+/* Base Styles */
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* AnchorPane for the whole page */
+#anchorPane {
+    -fx-background-color: #f4f6f8; /* Light grey background */
+    -fx-padding: 20px;
+}
+
+/* Dashboard Overview Label */
+.dashboard-overview-label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+/* Welcome Label */
+.welcome-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #777;
+    -fx-margin-top: 5px;
+}
+
+/* Info Cards */
+.info-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 5, 0, 2, 2);
+    -fx-padding: 20px;
+    -fx-spacing: 10px;
+    -fx-alignment: center-left;
+    -fx-transition: effect 0.3s ease-in-out, translate-y 0.3s ease-in-out;
+    -fx-translate-y: 0;
+}
+
+.info-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 5, 5);
+    -fx-translate-y: -5px;
+}
+
+.info-card .title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #555;
+}
+
+.info-card .value {
+    -fx-font-size: 22px;
+    -fx-font-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.info-card .percentage {
+    -fx-font-size: 14px;
+    -fx-text-fill: #27ae60; /* Green for positive change */
+}
+
+/* Recent Activities Card */
+.recent-activities-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 5, 0, 2, 2);
+    -fx-padding: 20px;
+    -fx-spacing: 15px;
+}
+
+.recent-activities-card .activity-item {
+    -fx-spacing: 10px;
+    -fx-alignment: center-left;
+}
+
+.recent-activities-card .activity-item .icon-container {
+    -fx-background-color: #ecf0f1;
+    -fx-background-radius: 5px;
+    -fx-padding: 8px;
+}
+
+.recent-activities-card .activity-item .title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+.recent-activities-card .activity-item .subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #777;
+}
+
+.recent-activities-card .activity-item .time {
+    -fx-font-size: 12px;
+    -fx-text-fill: #999;
+    -fx-margin-left: auto;
+}
+
+/* Quality Metrics Card */
+.quality-metrics-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 5, 0, 2, 2);
+    -fx-padding: 20px;
+    -fx-spacing: 10px;
+}
+
+.quality-metrics-card .metric-item {
+    -fx-spacing: 8px;
+    -fx-alignment: center-left;
+}
+
+.quality-metrics-card .metric-item .label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #555;
+}
+
+.quality-metrics-card .metric-item .value {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-margin-left: auto;
+}
+
+/* Initial Load Transition */
+.animated-element {
+    -fx-opacity: 0;
+    -fx-translate-y: 20px;
+    -fx-transition: opacity 0.5s ease-out, translate-y 0.5s ease-out;
+}
+
+.animated-element.show {
+    -fx-opacity: 1;
+    -fx-translate-y: 0;
+}

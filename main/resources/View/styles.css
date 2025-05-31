@@ -1,0 +1,263 @@
+/* Base Styles */
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+/* AnchorPane for the whole page */
+#ancPage2 {
+    -fx-background-color: #f4f4f4;
+}
+
+/* Background Rectangle */
+.rectangle {
+    -fx-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 0);
+}
+
+/* Left Panel */
+#ancPage1 {
+    -fx-background-color: linear-gradient(to bottom right, #3498db, #2c3e50);
+}
+
+#ancPage1 ImageView {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 0);
+}
+
+#ancPage1 Label {
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 2, 0, 0, 0);
+}
+
+#ancPage1 .label-header {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+}
+
+#ancPage1 .label-subheader {
+    -fx-font-size: 16px;
+}
+
+/* Right Panel - VBox */
+.vbox-right {
+    -fx-padding: 60 40 40 40;
+    -fx-spacing: 30;
+}
+
+/* User Login Label */
+.label-login {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 2, 0, 0, 0);
+}
+
+/* Greeting Label */
+.label-greeting {
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 10 0;
+}
+
+/* Input Fields - VBox */
+.vbox-input {
+    -fx-spacing: 20;
+    -fx-pref-width: 380px;
+}
+
+/* Input Field HBox */
+.hbox-input {
+    -fx-alignment: center-left;
+    -fx-spacing: 15;
+}
+
+.hbox-input ImageView {
+    -fx-fit-width: 24px;
+    -fx-fit-height: 24px;
+    -fx-opacity: 0.7;
+    -fx-transition: opacity 0.3s ease-in-out;
+}
+
+.hbox-input ImageView:hover {
+    -fx-opacity: 1.0;
+}
+
+/* Eye Icon */
+
+
+.eye-icon:hover {
+    -fx-opacity: 1.0;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+/* Text Field and Password Field */
+.text-field {
+    -fx-background-color: white;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-padding: 10 12;
+    -fx-prompt-text-fill: #7f8c8d;
+    -fx-font-size: 16px;
+    -fx-transition: border-color 0.3s ease-in-out, effect 0.3s ease-in-out;
+}
+
+.text-field:focused {
+    -fx-border-color: #3498db;
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.3), 5, 0, 0, 0);
+}
+
+/* Caps Lock Warning */
+.warning-label {
+    -fx-text-fill: #e74c3c;
+    -fx-font-size: 12px;
+    -fx-padding: 5 0 0 0;
+    -fx-alignment: center-left;
+}
+
+/* Remember Me Checkbox */
+.hbox-remember {
+    -fx-padding: 5 0 15 0;
+    -fx-alignment: center-left;
+}
+
+.checkbox-remember {
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 13px;
+}
+
+.checkbox-remember .box {
+    -fx-background-color: white;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 3px;
+    -fx-border-width: 1px;
+    -fx-padding: 2px;
+}
+
+.checkbox-remember:selected .mark {
+    -fx-background-color: #3498db;
+}
+
+.checkbox-remember:hover .box {
+    -fx-border-color: #3498db;
+}
+
+/* Login Button Container */
+.stack-pane {
+    -fx-pref-width: 180px;
+    -fx-pref-height: 40px;
+}
+
+/* Login Button */
+.button-login {
+    -fx-background-color: linear-gradient(to right, #3498db, #2980b9);
+    -fx-background-radius: 25px;
+    -fx-cursor: hand;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-pref-width: 180px;
+    -fx-pref-height: 40px;
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.5), 3, 0, 0, 0);
+    -fx-transition: all 0.3s ease;
+}
+
+.button-login:hover {
+    -fx-opacity: 0.9;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+}
+
+.button-login:pressed {
+    -fx-opacity: 0.8;
+    -fx-scale-x: 0.97;
+    -fx-scale-y: 0.97;
+    -fx-translate-y: 1px;
+}
+
+.button-login:disabled {
+    -fx-opacity: 0.7;
+    -fx-background-color: #95a5a6;
+}
+
+/* Login Progress Indicator */
+.progress-indicator {
+    -fx-progress-color: white;
+    -fx-pref-width: 24px;
+    -fx-pref-height: 24px;
+}
+
+/* Forgot Password Button */
+.button-forgot {
+    -fx-background-color: transparent;
+    -fx-text-fill: #7f8c8d;
+    -fx-font-size: 14px;
+    -fx-font-weight: normal;
+    -fx-underline: false;
+    -fx-padding: 5 10 5 10;
+    -fx-border-width: 0;
+    -fx-cursor: hand;
+    -fx-effect: null;
+    -fx-transition: all 0.3s ease;
+}
+
+.button-forgot:hover {
+    -fx-text-fill: #3498db;
+    -fx-underline: true;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.2), 0, 0, 0, 1);
+}
+
+.button-forgot:pressed {
+    -fx-text-fill: #2980b9;
+    -fx-translate-y: 1px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .vbox-right {
+        -fx-padding: 40 20 20 20;
+    }
+
+    .label-login {
+        -fx-font-size: 28px;
+    }
+
+    .vbox-input {
+        -fx-pref-width: 320px;
+    }
+}
+/* Loading Screen Styles */
+.loading-rect {
+    -fx-fill: linear-gradient(to bottom right, #3498db, #2c3e50);
+    -fx-arc-height: 20;
+    -fx-arc-width: 20;
+}
+
+.loading-text {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 2, 0, 0, 0);
+}
+
+.loading-progress {
+    -fx-progress-color: white;
+    -fx-pref-width: 50px;
+    -fx-pref-height: 50px;
+}
+
+/* Animation for loading screen */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.root {
+    -fx-background-color: transparent;
+    animation: fadeIn 1.5s ease-in;
+}

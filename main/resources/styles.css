@@ -1,0 +1,130 @@
+/* Main Background & Font */
+.root {
+    -fx-background-color: #f4f4f4;
+    -fx-font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* Stylish Buttons */
+.button {
+    -fx-background-color: linear-gradient(to bottom, #4a90e2, #357ab8);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 1);
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #5a9ae2, #4688c8);
+    -fx-cursor: hand;
+}
+
+/* Base Styles */
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* AnchorPane for the whole page */
+#ancPage2 {
+    -fx-background-color: #f4f4f4; /* Light grey background */
+}
+
+/* Background Rectangle */
+.rectangle {
+    -fx-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 0);
+}
+
+/* Left Panel */
+#ancPage1 {
+    -fx-background-color: linear-gradient(to bottom right, #3498db, #2c3e50); /* Updated gradient */
+}
+
+#ancPage1 ImageView {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 0);
+}
+
+#ancPage1 Label {
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 2, 0, 0, 0);
+}
+
+#ancPage1 .label-header {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+}
+
+#ancPage1 .label-subheader {
+    -fx-font-size: 16px;
+}
+
+/* Right Panel - VBox */
+.vbox-right {
+    -fx-padding: 80 40 40 40; /* Adjusted padding */
+    -fx-spacing: 40; /* Adjusted spacing */
+}
+
+/* User Login Label */
+.label-login {
+    -fx-font-size: 32px; /* Adjusted font size */
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 2, 0, 0, 0);
+}
+
+/* Input Fields - VBox */
+.vbox-input {
+    -fx-spacing: 25; /* Adjusted spacing */
+    -fx-pref-width: 380px; /* Adjusted preferred width */
+}
+
+/* Input Field HBox */
+.hbox-input {
+    -fx-alignment: center-left;
+    -fx-spacing: 15; /* Adjusted spacing */
+}
+
+.hbox-input ImageView {
+    -fx-fit-width: 24px; /* Adjusted icon size */
+    -fx-fit-height: 24px;
+}
+
+/* Text Field and Password Field */
+.text-field {
+    -fx-background-color: white; /* White background */
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1px; /* Thinner border */
+    -fx-border-radius: 5px; /* Rounded corners */
+    -fx-padding: 8 12; /* Adjusted padding */
+    -fx-prompt-text-fill: #7f8c8d;
+    -fx-font-size: 16px;
+}
+
+.text-field:focused {
+    -fx-border-color: #3498db; /* Highlight on focus */
+    -fx-effect: null; /* Remove glow on focus for a cleaner look */
+}
+
+/* Login Button */
+.button-login {
+    -fx-background-color: linear-gradient(to right, #3498db, #2980b9);
+    -fx-background-radius: 25px;
+    -fx-cursor: hand;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-pref-width: 180px; /* Adjusted button width */
+    -fx-pref-height: 40px; /* Adjusted button height */
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.5), 3, 0, 0, 0);
+}
+
+.button-login:hover {
+    -fx-opacity: 0.9;
+}
+
+.button-login:pressed {
+    -fx-opacity: 0.8;
+    -fx-translate-y: 1px;
+}
