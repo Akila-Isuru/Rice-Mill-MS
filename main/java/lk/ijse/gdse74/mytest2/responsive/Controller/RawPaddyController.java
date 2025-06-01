@@ -387,8 +387,10 @@ public class RawPaddyController implements Initializable {
         txtMoisture_level.clear();
         txtPurchase_price_per_kg.clear();
         txtQuantity_kg.clear();
-        cmbSupplier_id.setValue(null); // Set combo box to null to clear selection
-        cmbFarmer_id.setValue(null);   // Set combo box to null to clear selection
+        cmbSupplier_id.getSelectionModel().clearSelection(); // Clear combo box selection
+        cmbSupplier_id.setValue(null); // Also set value to null
+        cmbFarmer_id.getSelectionModel().clearSelection();   // Clear combo box selection
+        cmbFarmer_id.setValue(null);   // Also set value to null
 
         loadNextId();
         fillCurrentDate();

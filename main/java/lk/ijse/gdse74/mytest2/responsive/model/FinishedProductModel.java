@@ -55,7 +55,7 @@ public class FinishedProductModel {
     public static boolean reduceQty(SalesOrderDetailsdto salesOrderDetailsdto) throws SQLException {
         return CrudUtill.execute(
                 "update finished_product set total_quantity_bags = total_quantity_bags - ? where product_id = ?",
-                salesOrderDetailsdto.getQty(),
+                salesOrderDetailsdto.getUnitPrice(),
                 salesOrderDetailsdto.getProductId()
         );
     }
