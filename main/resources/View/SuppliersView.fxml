@@ -42,27 +42,27 @@
 
             <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #34495e; -fx-font-size: 12;" text="Email" />
             <TextField fx:id="txtemail" onKeyReleased="#txtEmailChange" promptText="example@exap.lk" style="-fx-background-radius: 3; -fx-border-color: #bdc3c7; -fx-border-radius: 3;" />
+      
+            <HBox prefHeight="40.0" prefWidth="548.0" spacing="10.0" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </VBox>
 
-      <HBox layoutX="50.0" layoutY="320.0" prefHeight="40.0" prefWidth="548.0" spacing="10.0" />
-
       <ButtonBar layoutX="50.0" layoutY="387.0" prefHeight="40.0" prefWidth="800.0" style="-fx-background-color: transparent; -fx-padding: 10 0 10 0;">
          <buttons>
-            <Button fx:id="btnDelete" minWidth="80.0" mnemonicParsing="false" onAction="#btnDeleteOnAction" prefHeight="30.0" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 3;" text="Delete">
-               <font>
-                  <Font size="12.0" />
-               </font>
-            </Button>
             <Button fx:id="btnClear" minWidth="80.0" mnemonicParsing="false" onAction="#btnClearOnAction" prefHeight="30.0" style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-background-radius: 3;" text="Clear">
                <font>
                   <Font size="12.0" />
                </font>
             </Button>
             <Button fx:id="btnUpdate" minWidth="80.0" mnemonicParsing="false" onAction="#btnUpdateOnAction" prefHeight="30.0" style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-background-radius: 3;" text="Update">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnDelete" minWidth="80.0" mnemonicParsing="false" onAction="#btnDeleteOnAction" prefHeight="30.0" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 3;" text="Delete">
                <font>
                   <Font size="12.0" />
                </font>

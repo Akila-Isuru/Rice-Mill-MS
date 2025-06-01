@@ -40,6 +40,7 @@ public class SuppliersController implements Initializable {
     @FXML private TextField txtSearch;
     @FXML private Label lblSupplierCount;
 
+
     private final String namePattern = "^[A-Za-z ]+$";
     private final String emailPattern = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
     private final String phonePattern = "^0\\d{9}$";
@@ -282,7 +283,7 @@ public class SuppliersController implements Initializable {
     @FXML
     public void txtEmailChange(KeyEvent keyEvent) {
         String email = txtemail.getText();
-        boolean isValidEmail = email.matches(emailPattern);
+       boolean isValidEmail = email.matches(emailPattern);
         txtemail.setStyle(isValidEmail ? "-fx-border-color: blue" : "-fx-border-color: red");
     }
 

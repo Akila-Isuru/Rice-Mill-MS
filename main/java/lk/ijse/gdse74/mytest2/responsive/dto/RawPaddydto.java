@@ -12,8 +12,8 @@ import java.util.Date;
 
 public class RawPaddydto {
     private String paddyId;
-    private String supplierId;
-    private String farmerId;
+    private String supplierId; // Can be null now
+    private String farmerId;   // Can be null now
     private double quantity;
     private double moisture;
     private double purchasePrice;
