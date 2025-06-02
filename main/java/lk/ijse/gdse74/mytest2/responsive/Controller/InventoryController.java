@@ -23,7 +23,7 @@ import java.sql.Date;
 
 public class InventoryController implements Initializable {
 
-    // Threshold constants for stock levels
+
     private static final int LOW_STOCK_THRESHOLD = 10;
     private static final int CRITICAL_STOCK_THRESHOLD = 5;
 
@@ -237,7 +237,7 @@ public class InventoryController implements Initializable {
                 ObservableList<Inventorydto> inventory = FXCollections.observableArrayList(inventorydtos);
                 table.setItems(inventory);
 
-                // Add row factory for visual indicators
+
                 table.setRowFactory(tv -> new TableRow<Inventorydto>() {
                     @Override
                     protected void updateItem(Inventorydto item, boolean empty) {

@@ -59,13 +59,13 @@ public class QualityCheckModel {
         if (resultSet.next()) {
             String lastId = resultSet.getString(1);
             try {
-                int lastIdNumber = Integer.parseInt(lastId.substring(2)); // Skip 'QC' and parse to int
-                return String.format("QC%03d", lastIdNumber + 1); // Increment and format
+                int lastIdNumber = Integer.parseInt(lastId.substring(2));
+                return String.format("QC%03d", lastIdNumber + 1);
             } catch (NumberFormatException e) {
-                // If parsing fails, return QC001
+
                 return "QC001";
             }
         }
-        return "QC001"; // If no records found, start with QC001
+        return "QC001";
     }
 }

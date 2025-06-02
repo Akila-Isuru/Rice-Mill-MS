@@ -11,19 +11,18 @@ import java.util.ArrayList;
 public class SalesOrderDetails {
     private final InventoryModel inventoryModel = new InventoryModel();
     public String getNextId() throws SQLException {
-//        Connection connection = DBConnection.getInstance().getConnection();
-//        String sql = "select customer_id from customer order by customer_id desc limit 1";
-//        PreparedStatement pst = connection.prepareStatement(sql);
 
-//        ResultSet resultSet = pst.executeQuery();
+
+
+
         ResultSet resultSet = CrudUtill.execute("select order_id from sales_order order by order_id desc limit 1");
-        String tableChar = "OD"; // Use any character Ex:- customer table for C, item table for I
+        String tableChar = "OD";
         if (resultSet.next()) {
-            String lastId = resultSet.getString(1); // "C004"
-            String lastIdNUmberString = lastId.substring(2); // "004"
-            int lastIdNumber = Integer.parseInt(lastIdNUmberString); // 4
-            int nextIdNumber = lastIdNumber + 1; // 5
-            String nextIdString = String.format(tableChar + "%03d", nextIdNumber); // "C005"
+            String lastId = resultSet.getString(1);
+            String lastIdNUmberString = lastId.substring(2);
+            int lastIdNumber = Integer.parseInt(lastIdNUmberString);
+            int nextIdNumber = lastIdNumber + 1;
+            String nextIdString = String.format(tableChar + "%03d", nextIdNumber);
             return nextIdString;
         }
         return tableChar + "001";

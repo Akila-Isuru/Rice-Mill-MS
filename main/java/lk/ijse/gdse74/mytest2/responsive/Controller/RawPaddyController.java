@@ -183,7 +183,7 @@ public class RawPaddyController implements Initializable {
         boolean isPriceValid = !txtPurchase_price_per_kg.getText().trim().isEmpty() && txtPurchase_price_per_kg.getText().matches("\\d*\\.?\\d+");
         boolean isDateValid = !txtPurchase_date.getText().trim().isEmpty(); // Further date format validation in validateFields()
 
-        // Allow save if quantity, price, date are valid AND (supplier_id OR farmer_id is selected)
+
         boolean isEitherIdSelected = cmbSupplier_id.getValue() != null || cmbFarmer_id.getValue() != null;
 
         btnSave.setDisable(!(isQuantityValid && isPriceValid && isDateValid && isEitherIdSelected));
@@ -234,7 +234,7 @@ public class RawPaddyController implements Initializable {
             double price = Double.parseDouble(txtPurchase_price_per_kg.getText());
             java.sql.Date purchasedDate = java.sql.Date.valueOf(txtPurchase_date.getText());
 
-            // Get selected IDs, convert empty strings or null to null
+
             String selectedSupplierId = cmbSupplier_id.getValue();
             String finalSupplierId = (selectedSupplierId != null && !selectedSupplierId.trim().isEmpty()) ? selectedSupplierId.trim() : null;
 
@@ -243,8 +243,8 @@ public class RawPaddyController implements Initializable {
 
             RawPaddydto dto = new RawPaddydto(
                     txtPaddy_id.getText(),
-                    finalSupplierId, // Use the potentially null value
-                    finalFarmerId,   // Use the potentially null value
+                    finalSupplierId,
+                    finalFarmerId,
                     quantity,
                     moisture,
                     price,
@@ -281,7 +281,7 @@ public class RawPaddyController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                if (!validateFields()) { // Re-use the same validation logic
+                if (!validateFields()) {
                     return;
                 }
 
@@ -290,7 +290,7 @@ public class RawPaddyController implements Initializable {
                 double price = Double.parseDouble(txtPurchase_price_per_kg.getText());
                 java.sql.Date purchasedDate = java.sql.Date.valueOf(txtPurchase_date.getText());
 
-                // Get selected IDs, convert empty strings or null to null
+
                 String selectedSupplierId = cmbSupplier_id.getValue();
                 String finalSupplierId = (selectedSupplierId != null && !selectedSupplierId.trim().isEmpty()) ? selectedSupplierId.trim() : null;
 
@@ -299,8 +299,8 @@ public class RawPaddyController implements Initializable {
 
                 RawPaddydto dto = new RawPaddydto(
                         txtPaddy_id.getText(),
-                        finalSupplierId, // Use the potentially null value
-                        finalFarmerId,   // Use the potentially null value
+                        finalSupplierId,
+                        finalFarmerId,
                         quantity,
                         moisture,
                         price,
@@ -346,7 +346,7 @@ public class RawPaddyController implements Initializable {
     }
 
     private boolean validateFields() {
-        // Validate required numeric and date fields
+
         if (txtQuantity_kg.getText().isEmpty() ||
                 txtPurchase_price_per_kg.getText().isEmpty() ||
                 txtPurchase_date.getText().isEmpty()) {
@@ -354,7 +354,7 @@ public class RawPaddyController implements Initializable {
             return false;
         }
 
-        // Validate that either Supplier ID OR Farmer ID is selected
+
         boolean isSupplierSelected = cmbSupplier_id.getValue() != null && !cmbSupplier_id.getValue().trim().isEmpty();
         boolean isFarmerSelected = cmbFarmer_id.getValue() != null && !cmbFarmer_id.getValue().trim().isEmpty();
 
@@ -363,10 +363,10 @@ public class RawPaddyController implements Initializable {
             return false;
         }
 
-        // Validate numeric and date formats
+
         try {
             Double.parseDouble(txtQuantity_kg.getText());
-            // Moisture level can be empty if not explicitly set, as it's calculated
+
             if (!txtMoisture_level.getText().isEmpty()) {
                 Double.parseDouble(txtMoisture_level.getText());
             }
@@ -387,10 +387,10 @@ public class RawPaddyController implements Initializable {
         txtMoisture_level.clear();
         txtPurchase_price_per_kg.clear();
         txtQuantity_kg.clear();
-        cmbSupplier_id.getSelectionModel().clearSelection(); // Clear combo box selection
-        cmbSupplier_id.setValue(null); // Also set value to null
-        cmbFarmer_id.getSelectionModel().clearSelection();   // Clear combo box selection
-        cmbFarmer_id.setValue(null);   // Also set value to null
+        cmbSupplier_id.getSelectionModel().clearSelection();
+        cmbSupplier_id.setValue(null);
+        cmbFarmer_id.getSelectionModel().clearSelection();
+        cmbFarmer_id.setValue(null);
 
         loadNextId();
         fillCurrentDate();

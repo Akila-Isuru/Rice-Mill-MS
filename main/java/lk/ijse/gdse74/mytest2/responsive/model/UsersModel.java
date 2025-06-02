@@ -9,17 +9,9 @@ import java.util.ArrayList;
 
 public class UsersModel {
 
-    /**
-     * Retrieves a user from the database based on the provided username and password.
-     *
-     * @param username The username to search for.
-     * @param password The password to match.
-     * @return A Usersdto object if a matching user is found, null otherwise.
-     * @throws SQLException If a database access error occurs.
-     * @throws ClassNotFoundException If the JDBC driver class is not found.
-     */
+
     public Usersdto getUserByUsernameAndPassword(String username, String password) throws SQLException, ClassNotFoundException {
-        // Assuming 'name' is the column for username in your 'users' table
+
         ResultSet rs = CrudUtill.execute("SELECT * FROM users WHERE name = ? AND password = ?", username, password);
 
         if (rs.next()) {
@@ -32,7 +24,7 @@ public class UsersModel {
                     rs.getString("contact_number")
             );
         }
-        return null; // No matching user found
+        return null;
     }
 
     public ArrayList<Usersdto> viewAllUsers() throws SQLException, ClassNotFoundException {
@@ -67,6 +59,10 @@ public class UsersModel {
     public boolean deleteUser(Usersdto userdto) throws SQLException, ClassNotFoundException {
         String sql = "DELETE FROM users WHERE user_id=?";
         return CrudUtill.execute(sql, userdto.getUser_id());
+    }
+    public String getPasswordByEmail(String email) throws SQLException, ClassNotFoundException {
+        ResultSet rs = CrudUtill.execute("SELECT password FROM users WHERE email = ?", email);
+        return rs.next() ? rs.getString("password") : null;
     }
 
     public boolean updateUser(Usersdto userdto) throws SQLException, ClassNotFoundException {

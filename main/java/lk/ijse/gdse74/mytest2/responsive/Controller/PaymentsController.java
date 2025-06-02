@@ -133,7 +133,7 @@ public class PaymentsController implements Initializable {
             System.out.println("UI refreshed with ID: " + txtPayement_Id.getText());
         });
 
-        // Refresh table
+
         loadTable();
 
     }

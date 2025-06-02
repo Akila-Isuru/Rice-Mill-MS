@@ -106,14 +106,14 @@ public class UsersController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            // Initialize role combo box
+
             cmbRole.getItems().addAll(ROLES);
 
-            // Hide the visible password field initially
+
             txtPasswordVisible.setVisible(false);
             txtPasswordVisible.setManaged(false);
 
-            // Set up password toggle functionality
+
             setupPasswordToggle();
 
             loadTable();
@@ -126,12 +126,12 @@ public class UsersController implements Initializable {
     }
 
     private void setupPasswordToggle() {
-        // Add listener to password field to update strength indicator
+
         txtPassword.textProperty().addListener((observable, oldValue, newValue) -> {
             updatePasswordStrength(newValue);
         });
 
-        // Add toggle button
+
         Button toggleBtn = new Button("👁");
         toggleBtn.setStyle("-fx-background-color: transparent; -fx-border-width: 0;");
         toggleBtn.setOnAction(e -> togglePasswordVisibility());
@@ -191,13 +191,13 @@ public class UsersController implements Initializable {
         if (password.length() >= 8) strength++;
         if (password.length() >= 12) strength++;
 
-        // Check for uppercase letters
+
         if (!password.equals(password.toLowerCase())) strength++;
 
-        // Check for numbers
+
         if (password.matches(".*\\d.*")) strength++;
 
-        // Check for special characters
+
         if (password.matches(".*[!@#$%^&*()_+].*")) strength++;
 
         return Math.min(strength, 4); // Cap at 4 for "Very Strong"
@@ -354,7 +354,7 @@ public class UsersController implements Initializable {
         String password = passwordVisible ? txtPasswordVisible.getText() : txtPassword.getText();
 
         boolean isValidName = name.matches(namePattern);
-        //boolean isValidEmail = email.matches(emailPattern);
+
         boolean isValidPhone = phone.matches(phonePattern);
         boolean isValidRole = role != null && !role.isEmpty();
 

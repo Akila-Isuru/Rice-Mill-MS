@@ -5,6 +5,7 @@ module lk.ijse.gdse74.mytest2.responsive {
     requires javafx.base;
     requires java.base;
     requires static lombok;
+    requires java.mail;
 
     opens lk.ijse.gdse74.mytest2.responsive.Controller to javafx.fxml;
     opens lk.ijse.gdse74.mytest2.responsive.dto to javafx.fxml, javafx.base;

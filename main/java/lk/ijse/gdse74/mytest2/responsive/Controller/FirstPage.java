@@ -11,8 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-import lk.ijse.gdse74.mytest2.responsive.model.UsersModel; // Import the UsersModel
-import lk.ijse.gdse74.mytest2.responsive.dto.Usersdto; // Import the Usersdto
+import lk.ijse.gdse74.mytest2.responsive.model.UsersModel;
+import lk.ijse.gdse74.mytest2.responsive.dto.Usersdto;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -40,27 +40,27 @@ public class FirstPage {
         String enteredUsername = userName.getText();
         String enteredPassword = password.getText();
 
-        UsersModel usersModel = new UsersModel(); // Create an instance of UsersModel
+        UsersModel usersModel = new UsersModel();
 
         try {
-            // Attempt to find the user by username and password
+
             Usersdto user = usersModel.getUserByUsernameAndPassword(enteredUsername, enteredPassword);
 
             if (user != null) {
-                // If a user is found, credentials are correct
+
                 Parent parent = FXMLLoader.load(getClass().getResource("/View/SecondPageView.fxml"));
                 Scene scene = new Scene(parent);
                 Stage stage = new Stage();
                 stage.setScene(scene);
-                stage.setTitle("Dashboard"); // Changed title to Dashboard
+                stage.setTitle("Dashboard");
                 stage.show();
 
-                // Close the current login window if needed
+
                 Stage currentStage = (Stage) btnSecond.getScene().getWindow();
                 currentStage.close();
 
             } else {
-                // If no user is found, credentials are incorrect
+
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Login Error");
                 alert.setHeaderText(null);
@@ -79,12 +79,11 @@ public class FirstPage {
         }
     }
 
-    public void forgotPasswordOnAction(ActionEvent actionEvent) {
-        // You can implement forgotten password functionality here
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Forgot Password");
-        alert.setHeaderText(null);
-        alert.setContentText("Please contact administration to reset your password.");
-        alert.showAndWait();
+    public void forgotPasswordOnAction(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/View/ForgotPasswordView.fxml"));
+        Stage stage = (Stage) ancPage1.getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Forgot Password");
+        stage.show();
     }
-}
+    }

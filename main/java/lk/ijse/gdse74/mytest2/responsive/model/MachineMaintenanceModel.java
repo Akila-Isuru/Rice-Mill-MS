@@ -59,10 +59,10 @@ public class MachineMaintenanceModel {
                 int lastIdNumber = Integer.parseInt(lastId.substring(2)); // Skip 'MM' and parse to int
                 return String.format("MM%03d", lastIdNumber + 1); // Increment and format
             } catch (NumberFormatException e) {
-                // If parsing fails, return MM001
+
                 return "MM001";
             }
         }
-        return "MM001"; // If no records found, start with MM001
+        return "MM001";
     }
 }

@@ -289,7 +289,7 @@ public class SuppliersController implements Initializable {
 
     @FXML
     void searchSupplier(KeyEvent event) {
-        // Handled by the search filter setup
+
     }
 
     @FXML

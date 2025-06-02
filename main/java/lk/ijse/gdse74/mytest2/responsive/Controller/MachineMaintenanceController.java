@@ -101,7 +101,7 @@ public class MachineMaintenanceController implements Initializable {
                 txtdescription.getText().isEmpty() ||
                 txtcost.getText().isEmpty();
 
-        // Only disable Save button if we're not in update mode
+
         if (btnSave.isDisabled()) return;
 
         btnSave.setDisable(anyFieldEmpty);

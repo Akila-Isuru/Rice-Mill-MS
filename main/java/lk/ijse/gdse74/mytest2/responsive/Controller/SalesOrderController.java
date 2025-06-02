@@ -121,7 +121,7 @@ public class SalesOrderController implements Initializable {
                 }
             }
 
-            // For new items
+
             if (cartQty > currentAvailableQty) {
                 new Alert(Alert.AlertType.WARNING,
                         "Not enough quantity! Available: " + currentAvailableQty).show();
@@ -156,7 +156,7 @@ public class SalesOrderController implements Initializable {
         }
     }
 
-    // Rest of your existing methods remain exactly the same
+
     @FXML void btnClearOnAction(ActionEvent event) { clearFields(); }
 
     @FXML void btnDeleteOnAction(ActionEvent event) {
@@ -173,7 +173,7 @@ public class SalesOrderController implements Initializable {
     }
 
     @FXML void btnSaveOnAction(ActionEvent event) {
-        // Your existing save implementation
+
     }
 
     private void clearFields() {

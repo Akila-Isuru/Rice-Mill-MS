@@ -59,7 +59,7 @@ public class QualityCheckController implements Initializable {
         colBrokent_precentage.setCellValueFactory(new PropertyValueFactory<>("brokenPrecentage"));
         col_inception_date.setCellValueFactory(new PropertyValueFactory<>("inceptionDate"));
 
-        // Grade column with dynamic calculation and coloring
+
         colGrade.setCellFactory(column -> new TableCell<QualityCheckdto, String>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -183,7 +183,7 @@ public class QualityCheckController implements Initializable {
             return false;
         }
 
-        // Check if any field has validation error (red border)
+
         if (txtMoisture_level.getStyle().contains("red") ||
                 txtForeign_Material.getStyle().contains("red") ||
                 txtBroken_precentage.getStyle().contains("red")) {

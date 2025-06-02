@@ -254,7 +254,7 @@ public class FarmersController implements Initializable {
 
     @FXML
     void searchFarmer(KeyEvent event) {
-        // Handled by the search filter setup
+
     }
 
     @FXML

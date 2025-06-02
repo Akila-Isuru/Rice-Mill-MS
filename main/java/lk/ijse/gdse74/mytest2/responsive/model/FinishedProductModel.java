@@ -96,6 +96,6 @@ public class FinishedProductModel {
             int nextNum = Integer.parseInt(lastId.substring(2)) + 1; // Extract number after "FP"
             return String.format("FP%03d", nextNum);
         }
-        return "FP001"; // Return first ID if no records exist
+        return "FP001";
     }
 }
