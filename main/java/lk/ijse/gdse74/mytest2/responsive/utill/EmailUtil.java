@@ -5,12 +5,12 @@ import javax.mail.*;
 import javax.mail.internet.*;
 
 public class EmailUtil {
-    private static final String FROM_EMAIL = "akilaisurukahingala@gmail.com"; // replace with your email
-    private static final String PASSWORD = "xtgs rayg dcfc xepv"; // replace with your password
+    private static final String FROM_EMAIL = "akilaisurukahingala@gmail.com";
+    private static final String PASSWORD = "xtgs rayg dcfc xepv";
 
     public static boolean sendEmail(String toEmail, String subject, String body) {
         Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com"); // for gmail
+        props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");

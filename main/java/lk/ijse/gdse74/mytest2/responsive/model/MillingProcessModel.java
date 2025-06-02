@@ -30,6 +30,26 @@ public class MillingProcessModel {
         return list;
     }
 
+
+    public static MillingProcessdto getMillingProcessByMillingId(String millingId) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT * FROM milling_process WHERE milling_id = ?";
+        ResultSet rs = CrudUtill.execute(sql, millingId);
+
+        if (rs.next()) {
+            return new MillingProcessdto(
+                    rs.getString("milling_id"),
+                    rs.getString("paddy_id"),
+                    rs.getTime("start_time"),
+                    rs.getTime("end_time"),
+                    rs.getDouble("milled_quantity"),
+                    rs.getDouble("broken_rice"),
+                    rs.getDouble("husk_kg"),
+                    rs.getDouble("bran_kg")
+            );
+        }
+        return null;
+    }
+
     public static boolean saveMillingProcess(MillingProcessdto dto) throws SQLException, ClassNotFoundException {
         String sql = "INSERT INTO milling_process VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         return CrudUtill.execute(
@@ -86,6 +106,18 @@ public class MillingProcessModel {
         ArrayList<String> ids = new ArrayList<>();
         while (rs.next()) {
             ids.add(rs.getString("paddy_id"));
+        }
+        return ids;
+    }
+
+
+    public static ArrayList<String> getAllMillingIds() throws SQLException, ClassNotFoundException {
+        String sql = "SELECT milling_id FROM milling_process ORDER BY milling_id";
+        ResultSet rs = CrudUtill.execute(sql);
+
+        ArrayList<String> ids = new ArrayList<>();
+        while (rs.next()) {
+            ids.add(rs.getString("milling_id"));
         }
         return ids;
     }
