@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.paint.Color?>
+
+<AnchorPane fx:id="userEmployeeAnc" prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: linear-gradient(to bottom right, #f5f7fa, #e4e8f0);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse74.mytest2.responsive.Controller.EmployeeUserController">
+    <children>
+        <VBox alignment="CENTER" layoutX="100.0" layoutY="150.0" prefHeight="400.0" prefWidth="700.0" spacing="30.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-border-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 20, 0, 0, 10);">
+            <children>
+                <Label style="-fx-text-fill: #34495e; -fx-font-weight: bold;" text="Manage Users and Employees">
+                    <font>
+                        <Font name="Segoe UI" size="32.0" />
+                    </font>
+                    <effect>
+                        <DropShadow color="rgba(0,0,0,0.05)" radius="3" offsetX="1" offsetY="1"/>
+                    </effect>
+                </Label>
+
+                <Label style="-fx-text-fill: #7f8c8d; -fx-font-style: italic;" text="Select an option below to continue">
+                    <font>
+                        <Font name="Segoe UI" size="14.0" />
+                    </font>
+                </Label>
+
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#btnEmployeeManagementOnAction" prefHeight="90.0" prefWidth="250.0" style="-fx-background-color: linear-gradient(to right, #3498db, #2980b9); -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="Employee Management">
+                            <font>
+                                <Font name="Segoe UI Semibold" size="18.0" />
+                            </font>
+                            <effect>
+                                <DropShadow color="rgba(52,152,219,0.3)" radius="8" offsetX="0" offsetY="3"/>
+                            </effect>
+                            <padding>
+                                <Insets bottom="15.0" left="25.0" right="25.0" top="15.0" />
+                            </padding>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#btnUserManagementOnAction" prefHeight="90.0" prefWidth="250.0" style="-fx-background-color: linear-gradient(to right, #f39c12, #e67e22); -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="User Management">
+                            <font>
+                                <Font name="Segoe UI Semibold" size="18.0" />
+                            </font>
+                            <effect>
+                                <DropShadow color="rgba(243,156,18,0.3)" radius="8" offsetX="0" offsetY="3"/>
+                            </effect>
+                            <padding>
+                                <Insets bottom="15.0" left="25.0" right="25.0" top="15.0" />
+                            </padding>
+                        </Button>
+                    </children>
+                </HBox>
+
+                <HBox alignment="CENTER" prefHeight="90.0" prefWidth="200.0">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#btnEmployeeAttendanceOnAction" prefHeight="90.0" prefWidth="250.0" style="-fx-background-color: linear-gradient(to right, #6f42c1, #563d7c); -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="Employee Attendance">
+                            <font>
+                                <Font name="Segoe UI Semibold" size="18.0" />
+                            </font>
+                            <effect>
+                                <DropShadow color="rgba(111,66,193,0.3)" radius="8" offsetX="0" offsetY="3"/>
+                            </effect>
+                            <padding>
+                                <Insets bottom="15.0" left="25.0" right="25.0" top="15.0" />
+                            </padding>
+                        </Button>
+                    </children>
+                    <padding>
+                        <Insets top="20.0" />
+                    </padding>
+                </HBox>
+            </children>
+            <padding>
+                <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+            </padding>
+        </VBox>
+    </children>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+</AnchorPane>

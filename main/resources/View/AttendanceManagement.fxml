@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="attendanceManagementAnc" prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: linear-gradient(to bottom right, #f5f7fa, #e4e8f0);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse74.mytest2.responsive.Controller.AttendanceManagementController">
+    <children>
+        <VBox alignment="TOP_CENTER" layoutX="50.0" layoutY="50.0" prefHeight="600.0" prefWidth="800.0" spacing="20.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-border-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 20, 0, 0, 10);">
+            <children>
+                <Label prefHeight="39.0" prefWidth="760.0" style="-fx-text-fill: #34495e; -fx-font-weight: bold;" text="Employee Attendance &amp; Salary">
+                    <font>
+                        <Font name="Segoe UI" size="32.0" />
+                    </font>
+                    <effect>
+                        <DropShadow color="rgba(0,0,0,0.05)" offsetX="1" offsetY="1" radius="3" />
+                    </effect>
+                </Label>
+
+                <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                    <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                    </padding>
+                    <Label style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #34495e;" text="Record Attendance" />
+                    <Separator />
+                    <HBox alignment="CENTER_LEFT" spacing="20.0">
+                        <VBox spacing="5.0">
+                            <Label text="Employee ID:">
+                                <font>
+                                    <Font name="Segoe UI Semibold" size="13.0" />
+                                </font>
+                            </Label>
+                            <ComboBox fx:id="cmbEmployeeId" prefWidth="150.0" promptText="Select Employee ID" />
+                        </VBox>
+                        <VBox spacing="5.0">
+                            <Label text="Date:">
+                                <font>
+                                    <Font name="Segoe UI Semibold" size="13.0" />
+                                </font>
+                            </Label>
+                            <DatePicker fx:id="dpDate" prefWidth="150.0" promptText="Select Date" />
+                        </VBox>
+                        <VBox spacing="5.0">
+                            <Label text="Status:">
+                                <font>
+                                    <Font name="Segoe UI Semibold" size="13.0" />
+                                </font>
+                            </Label>
+                            <ComboBox fx:id="cmbStatus" prefWidth="120.0" promptText="Status" />
+                        </VBox>
+                        <VBox spacing="5.0">
+                            <Label text="In Time (HH:MM):">
+                                <font>
+                                    <Font name="Segoe UI Semibold" size="13.0" />
+                                </font>
+                            </Label>
+                            <TextField fx:id="txtInTime" prefWidth="100.0" promptText="e.g., 09:00" />
+                        </VBox>
+                        <VBox spacing="5.0">
+                            <Label text="Out Time (HH:MM):">
+                                <font>
+                                    <Font name="Segoe UI Semibold" size="13.0" />
+                                </font>
+                            </Label>
+                            <TextField fx:id="txtOutTime" prefWidth="100.0" promptText="e.g., 17:00" />
+                        </VBox>
+                    </HBox>
+                    <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                        <Button mnemonicParsing="false" onAction="#btnAddAttendanceOnAction" style="-fx-background-color: linear-gradient(to right, #28a745, #218838); -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;" text="Add/Update Attendance">
+                            <font>
+                                <Font name="Segoe UI Semibold" size="14.0" />
+                            </font>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#btnClearFieldsOnAction" style="-fx-background-color: linear-gradient(to right, #6c757d, #5a6268); -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;" text="Clear Fields">
+                            <font>
+                                <Font name="Segoe UI Semibold" size="14.0" />
+                            </font>
+                        </Button>
+                    </HBox>
+                </VBox>
+
+                <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                    <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                    </padding>
+                    <Label style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #34495e;" text="Attendance Records" />
+                    <Separator />
+                    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                        <content>
+                            <TableView fx:id="tblAttendance" prefHeight="200.0">
+                                <columns>
+                                    <TableColumn fx:id="colAttendanceId" prefWidth="100.0" text="Att. ID">
+                                        <cellValueFactory><PropertyValueFactory property="attendanceId" /></cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn fx:id="colAttEmployeeId" prefWidth="100.0" text="Emp. ID">
+                                        <cellValueFactory><PropertyValueFactory property="employeeId" /></cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn fx:id="colDate" prefWidth="100.0" text="Date">
+                                        <cellValueFactory><PropertyValueFactory property="date" /></cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn fx:id="colStatus" prefWidth="100.0" text="Status">
+                                        <cellValueFactory><PropertyValueFactory property="status" /></cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn fx:id="colInTime" prefWidth="90.0" text="In Time">
+                                        <cellValueFactory><PropertyValueFactory property="inTime" /></cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn fx:id="colOutTime" prefWidth="90.0" text="Out Time">
+                                        <cellValueFactory><PropertyValueFactory property="outTime" /></cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn fx:id="colHoursWorked" prefWidth="120.0" text="Hours Worked">
+                                        <cellValueFactory><PropertyValueFactory property="hoursWorked" /></cellValueFactory>
+                                    </TableColumn>
+                                </columns>
+                            </TableView>
+                        </content>
+                    </ScrollPane>
+                    <Label fx:id="lblAttendanceCount" text="Attendance Records: 0">
+                        <font>
+                            <Font name="Segoe UI Italic" size="12.0" />
+                        </font>
+                    </Label>
+                </VBox>
+
+                <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                    <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                    </padding>
+                    <Label style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #34495e;" text="Calculate Salary" />
+                    <Separator />
+                    <HBox alignment="CENTER_LEFT" spacing="20.0">
+                        <VBox spacing="5.0">
+                            <Label text="Employee ID:">
+                                <font>
+                                    <Font name="Segoe UI Semibold" size="13.0" />
+                                </font>
+                            </Label>
+                            <ComboBox fx:id="cmbSalaryEmployeeId" prefWidth="180.0" promptText="Select Employee ID" />
+                        </VBox>
+                        <VBox spacing="5.0">
+                            <Label text="Month:">
+                                <font>
+                                    <Font name="Segoe UI Semibold" size="13.0" />
+                                </font>
+                            </Label>
+                            <DatePicker fx:id="dpSalaryMonth" prefWidth="150.0" promptText="Select Month" />
+                        </VBox>
+                        <Button mnemonicParsing="false" onAction="#btnCalculateSalaryOnAction" style="-fx-background-color: linear-gradient(to right, #007bff, #0056b3); -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;" text="Calculate Salary">
+                            <font>
+                                <Font name="Segoe UI Semibold" size="14.0" />
+                            </font>
+                        </Button>
+                        <HBox alignment="CENTER_LEFT" spacing="5.0">
+                            <Label text="Calculated Salary:">
+                                <font>
+                                    <Font name="Segoe UI Semibold" size="13.0" />
+                                </font>
+                            </Label>
+                            <Label fx:id="lblCalculatedSalary" style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #28a745;" text="LKR 0.00" />
+                        </HBox>
+                    </HBox>
+                </VBox>
+
+            </children>
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+        </VBox>
+    </children>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+</AnchorPane>

@@ -38,7 +38,7 @@ public class SecondPage implements Initializable {
 
     @FXML
     void btnUserOnAction(ActionEvent event) {
-        navigateTo("/View/UserPageView.fxml");
+        navigateTo("/View/User&Employee.fxml");
 
     }
     public void btnSupplierOnAction(ActionEvent actionEvent) {
