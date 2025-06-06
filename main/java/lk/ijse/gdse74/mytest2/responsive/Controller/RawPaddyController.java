@@ -155,7 +155,7 @@ public class RawPaddyController implements Initializable {
             if (!newValue.isEmpty() && newValue.matches("\\d*\\.?\\d+")) {
                 calculateMoistureLevel(Double.parseDouble(newValue));
                 updateSaveButtonState();
-            } else if (newValue.isEmpty()) { // Clear moisture if quantity is cleared
+            } else if (newValue.isEmpty()) {
                 txtMoisture_level.clear();
                 updateSaveButtonState();
             }
@@ -181,7 +181,7 @@ public class RawPaddyController implements Initializable {
     private void updateSaveButtonState() {
         boolean isQuantityValid = !txtQuantity_kg.getText().trim().isEmpty() && txtQuantity_kg.getText().matches("\\d*\\.?\\d+");
         boolean isPriceValid = !txtPurchase_price_per_kg.getText().trim().isEmpty() && txtPurchase_price_per_kg.getText().matches("\\d*\\.?\\d+");
-        boolean isDateValid = !txtPurchase_date.getText().trim().isEmpty(); // Further date format validation in validateFields()
+        boolean isDateValid = !txtPurchase_date.getText().trim().isEmpty();
 
 
         boolean isEitherIdSelected = cmbSupplier_id.getValue() != null || cmbFarmer_id.getValue() != null;
@@ -333,7 +333,7 @@ public class RawPaddyController implements Initializable {
         RawPaddydto selectedItem = table.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
             txtPaddy_id.setText(selectedItem.getPaddyId());
-            // Set combo box values, allowing for null
+
             cmbSupplier_id.setValue(selectedItem.getSupplierId());
             cmbFarmer_id.setValue(selectedItem.getFarmerId());
             txtQuantity_kg.setText(String.valueOf(selectedItem.getQuantity()));

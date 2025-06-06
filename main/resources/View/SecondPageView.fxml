@@ -107,15 +107,6 @@
             </padding>
          </Button>
 
-         <Button id="btnQualityCheck" mnemonicParsing="false" onAction="#btnQualityCheckOnActiion" styleClass="button-menu" text="Quality Check">
-            <font>
-               <Font size="16.0" />
-            </font>
-            <padding>
-               <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
-            </padding>
-         </Button>
-
          <Button id="btnMaintenance" mnemonicParsing="false" onAction="#btnMaintenanceOnAction" styleClass="button-menu" text="Maintenance">
             <font>
                <Font size="16.0" />

@@ -19,9 +19,7 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="lk.ijse.gdse74.mytest2.responsive.Controller.InventoryController">
 
-   <stylesheets>
-      <URL value="@../View/inventory.css" />
-   </stylesheets>
+
 
    <children>
       <Label layoutX="20.0" layoutY="20.0" style="-fx-text-fill: #2c3e50;" text="Inventory Management">

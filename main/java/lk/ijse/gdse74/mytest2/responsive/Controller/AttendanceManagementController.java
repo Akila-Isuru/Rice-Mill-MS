@@ -49,7 +49,7 @@ public class AttendanceManagementController implements Initializable {
     private EmployeeModel employeeModel = new EmployeeModel();
     private ObservableList<AttendanceDto> attendanceMasterData = FXCollections.observableArrayList();
 
-    private final String timePattern = "^([01]?[0-9]|2[0-3]):([0-5]?[0-9])$"; // HH:MM format
+    private final String timePattern = "^([01]?[0-9]|2[0-3]):([0-5]?[0-9])$";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -60,7 +60,7 @@ public class AttendanceManagementController implements Initializable {
         setupTableSelectionListener();
         setupSalaryEmployeeIds();
 
-        // Listener for Employee ID ComboBox to load attendance for selected employee
+
         cmbEmployeeId.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null && dpDate.getValue() != null) {
                 try {
@@ -77,7 +77,7 @@ public class AttendanceManagementController implements Initializable {
             }
         });
 
-        // Listener for DatePicker to load attendance for selected employee and date
+
         dpDate.valueProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null && cmbEmployeeId.getValue() != null) {
                 try {
@@ -103,7 +103,7 @@ public class AttendanceManagementController implements Initializable {
                 employeeIds.add(emp.getEmployeeId());
             }
             cmbEmployeeId.setItems(employeeIds);
-            cmbEmployeeId.getSelectionModel().selectFirst(); // Select first item by default
+            cmbEmployeeId.getSelectionModel().selectFirst();
         } catch (SQLException e) {
             showAlert("Failed to load employee IDs: " + e.getMessage());
             e.printStackTrace();
@@ -112,7 +112,7 @@ public class AttendanceManagementController implements Initializable {
 
     private void populateStatusComboBox() {
         cmbStatus.setItems(FXCollections.observableArrayList("Present", "Absent", "Half-day"));
-        cmbStatus.getSelectionModel().selectFirst(); // Select first item by default
+        cmbStatus.getSelectionModel().selectFirst();
     }
 
     private void setupAttendanceTable() {
@@ -177,7 +177,7 @@ public class AttendanceManagementController implements Initializable {
                 employeeIds.add(emp.getEmployeeId());
             }
             cmbSalaryEmployeeId.setItems(employeeIds);
-            cmbSalaryEmployeeId.getSelectionModel().selectFirst(); // Select first item by default
+            cmbSalaryEmployeeId.getSelectionModel().selectFirst();
         } catch (SQLException e) {
             showAlert("Failed to load employee IDs for salary calculation: " + e.getMessage());
             e.printStackTrace();

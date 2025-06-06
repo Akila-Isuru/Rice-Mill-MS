@@ -42,6 +42,7 @@ public class SecondPage implements Initializable {
 
     }
     public void btnSupplierOnAction(ActionEvent actionEvent) {
+
         navigateTo("/View/Farmers&Suppliers.fxml");
     }
     public void btnCustomersOnAction(ActionEvent actionEvent) {

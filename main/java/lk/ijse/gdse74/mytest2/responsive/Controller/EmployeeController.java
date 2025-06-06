@@ -87,10 +87,7 @@ public class EmployeeController implements Initializable {
                 } else if (employee.getJobRole().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
                 }
-                // Optionally, you can search by salary if it's represented as a string
-                // else if (employee.getBasicSalary().toString().toLowerCase().contains(lowerCaseFilter)) {
-                //     return true;
-                // }
+
                 return false;
             });
 
