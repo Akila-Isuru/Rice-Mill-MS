@@ -9,8 +9,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -38,9 +40,32 @@ public class SecondPage implements Initializable {
 
     @FXML
     void btnUserOnAction(ActionEvent event) {
-        navigateTo("/View/User&Employee.fxml");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/AdminPasswordPrompt.fxml"));
+            Parent root = loader.load();
 
+            AdminPasswordController controller = loader.getController();
+            controller.setSecondPageController(this);
+
+            Stage passwordStage = new Stage();
+            passwordStage.initModality(Modality.APPLICATION_MODAL);
+            passwordStage.setTitle("Admin Authentication");
+            passwordStage.setScene(new Scene(root));
+            passwordStage.setResizable(false);
+            passwordStage.showAndWait();
+
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR, "Failed to load admin password prompt: " + e.getMessage(), ButtonType.OK).show();
+            e.printStackTrace();
+        }
     }
+
+
+    public void loadUserAndEmployeePage() {
+        navigateTo("/View/User&Employee.fxml");
+    }
+
+
     public void btnSupplierOnAction(ActionEvent actionEvent) {
 
         navigateTo("/View/Farmers&Suppliers.fxml");
@@ -58,7 +83,7 @@ public class SecondPage implements Initializable {
         navigateTo("/View/SalesOrederView.fxml");
     }
     public void btnExpensesOnAction(ActionEvent actionEvent) {
-      navigateTo("/View/PaymentsView.fxml");
+        navigateTo("/View/PaymentsView.fxml");
     }
     public void btnReportsOnAction(ActionEvent actionEvent) {
         navigateTo("/View/ReportsView.fxml");

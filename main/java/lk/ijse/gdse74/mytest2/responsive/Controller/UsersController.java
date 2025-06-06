@@ -29,9 +29,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class UsersController implements Initializable {
-    Connection connection = null;
-    PreparedStatement pst = null;
-    ResultSet rs = null;
+
 
     @FXML
     private Button btnClear;
@@ -100,7 +98,7 @@ public class UsersController implements Initializable {
     private final String[] ROLES = {"Admin", "Manager", "Cashier", "User"};
 
     private final String namePattern = "^[A-Za-z ]+$";
-    private final String emailPattern = "^[a-zA-Z0-9._%+-]+@ricemill\\.lk$";
+    private final String emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"; // වෙනස් කළා
     private final String phonePattern = "^(?:0|\\+94|0094)?(?:07\\d{8})$";
 
     @Override
@@ -187,7 +185,7 @@ public class UsersController implements Initializable {
     private int calculatePasswordStrength(String password) {
         int strength = 0;
 
-        // Check length
+
         if (password.length() >= 8) strength++;
         if (password.length() >= 12) strength++;
 
@@ -200,7 +198,7 @@ public class UsersController implements Initializable {
 
         if (password.matches(".*[!@#$%^&*()_+].*")) strength++;
 
-        return Math.min(strength, 4); // Cap at 4 for "Very Strong"
+        return Math.min(strength, 4);
     }
 
     private void loadNextId() throws SQLException {
@@ -332,7 +330,7 @@ public class UsersController implements Initializable {
         btnDelete.setDisable(true);
         btnUpdate.setDisable(true);
 
-        // Reset password visibility
+
         if (passwordVisible) {
             togglePasswordVisibility();
         }

@@ -17,5 +17,5 @@ public class AttendanceDto {
     private String status;
     private LocalTime inTime;
     private LocalTime outTime;
-    private Double hoursWorked; // Using Double for simplicity in JavaFX table, BigDecimal for calculations if needed
+    private Double hoursWorked;
 }

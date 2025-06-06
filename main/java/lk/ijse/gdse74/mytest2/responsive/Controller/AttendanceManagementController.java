@@ -367,6 +367,6 @@ public class AttendanceManagementController implements Initializable {
     }
 
     private void showAlert(String message) {
-        new Alert(Alert.AlertType.ERROR, message).show();
+        new Alert(Alert.AlertType.INFORMATION, message).show();
     }
 }
