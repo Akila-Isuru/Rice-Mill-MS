@@ -58,6 +58,7 @@ public class CustomerModel {
 
     public boolean deleteCustomer(Customersdto customersdto) throws SQLException {
         String sql = "delete from customers where customer_id=?";
+        String s = new String("String");
         return CrudUtill.execute(sql, customersdto.getCustomerId());
     }
 

@@ -89,15 +89,6 @@
             </padding>
          </Button>
 
-         <Button id="btnExpenses" mnemonicParsing="false" onAction="#btnExpensesOnAction" styleClass="button-menu" text="Expenses &amp; Payments">
-            <font>
-               <Font size="16.0" />
-            </font>
-            <padding>
-               <Insets bottom="8.0" left="10.0" right="10.0" top="8.0" />
-            </padding>
-         </Button>
-
          <Button id="btnReports" mnemonicParsing="false" onAction="#btnReportsOnAction" styleClass="button-menu" text="Reports">
             <font>
                <Font size="16.0" />

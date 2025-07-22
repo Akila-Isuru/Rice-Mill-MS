@@ -22,7 +22,7 @@
          <children>
             <ImageView fitHeight="120.0" fitWidth="120.0" layoutX="65.0" layoutY="60.0">
                <image>
-                  <Image url="@../Image/test.png" />
+                  <Image url="@../../../../../../IdeaProjects/RiceMillLayered/src/main/resources/Image/test.png" />
                </image>
             </ImageView>
             <Label layoutX="50.0" layoutY="200.0" styleClass="label-header" text="LAKSHAN" />
@@ -38,7 +38,7 @@
                <HBox styleClass="hbox-input">
                   <ImageView fitHeight="24" fitWidth="24">
                      <image>
-                        <Image url="@../Image/user-244-128.png" />
+                        <Image url="@../../../../../../IdeaProjects/RiceMillLayered/src/main/resources/Image/user-244-128.png" />
                      </image>
                   </ImageView>
                   <TextField fx:id="userName" prefHeight="40" prefWidth="300" promptText="User Name" styleClass="text-field" />

@@ -17,7 +17,7 @@
             <children>
                 <ImageView fitHeight="150.0" fitWidth="150.0">
                     <image>
-                        <Image url="@../Image/test.png" />
+                        <Image url="@../../../../../../IdeaProjects/RiceMillLayered/src/main/resources/Image/test.png" />
                     </image>
                 </ImageView>
                 <Text styleClass="loading-text" text="LAKSHAN RICE MILL" />

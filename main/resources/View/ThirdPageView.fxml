@@ -12,7 +12,7 @@
    <children>
       <ImageView fitHeight="31.0" fitWidth="37.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Image/dashboard-icon-vector-8.jpg" />
+            <Image url="@../../../../../../IdeaProjects/RiceMillLayered/src/main/resources/Image/dashboard-icon-vector-8.jpg" />
          </image>
       </ImageView>
 
